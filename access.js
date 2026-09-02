@@ -26,10 +26,7 @@ function show(reselect,msg){
   else if(selected)form=`<div class="cg-form"><div class="cg-hint"><b>${roles[selected]}</b> não precisa de código.</div></div>`;
   w.innerHTML=`<div class="cg-sheet"><div class="cg-brand"><img class="cg-logo" src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Logo_fcd_grand.svg" onerror="this.style.display='none'"><div><span class="cg-kicker">FC DÉIFFERDENG 03 · CLUBGEST</span><h2>Quem és?</h2></div></div><p class="cg-sub">Uma experiência ClubGest feita à medida do FCD03.</p><div class="cg-roles">${cards}</div>${form}<div class="cg-actions"><button type="button" class="cg-btn light" id="cg-cancel">Cancelar</button><button type="button" class="cg-btn red" id="cg-continue" ${selected?'':'disabled'}>Continuar</button></div></div>`;
   document.body.appendChild(w);
-  const pick=ev=>{const btn=ev.target.closest('.cg-role');if(!btn)return;ev.preventDefault();selected=btn.dataset.role;show(false)};
-  w.addEventListener('click',pick);
-  w.addEventListener('pointerup',pick);
-  w.addEventListener('touchend',pick,{passive:false});
+  w.addEventListener('click',ev=>{const btn=ev.target.closest('.cg-role');if(!btn)return;ev.preventDefault();selected=btn.dataset.role;show(false)});
   w.querySelector('#cg-cancel').addEventListener('click',()=>window.cgClose());
   w.querySelector('#cg-continue').addEventListener('click',()=>window.cgContinue());
 }

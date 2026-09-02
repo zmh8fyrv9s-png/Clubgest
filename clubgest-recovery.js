@@ -1,5 +1,22 @@
 (function(){'use strict';
+  var KEY='clubgest_v3', GUARD='cgRecoveryReloadV1';
+  function resetAndReload(){
+    if(sessionStorage.getItem(GUARD)==='1') return false;
+    sessionStorage.setItem(GUARD,'1');
+    try{localStorage.removeItem(KEY);localStorage.removeItem('cgRole');localStorage.removeItem('cgTeam');}catch(e){}
+    location.reload();
+    return true;
+  }
+  function installErrorGuard(){
+    window.addEventListener('error',function(){
+      if(document.getElementById('home')) resetAndReload();
+    });
+    window.addEventListener('unhandledrejection',function(){
+      if(document.getElementById('home')) resetAndReload();
+    });
+  }
   function boot(){
+    installErrorGuard();
     var home=document.getElementById('home'), att=document.getElementById('attendance'), cal=document.getElementById('calendar'), man=document.getElementById('manage'), team=document.getElementById('team');
     if(!home||typeof window.render==='function'&&home.innerHTML.trim()) return;
     var teams={U7:{coach:'João Pereira',players:['Arthur Silva','Leo Martins','Noah Costa','Tiago Santos'],events:['Treino U7 · 03/09 · 18:00']},U9:{coach:'Alex Duarte',players:['Lucas Ferreira','Tomás Martins','Enzo Costa','Gabriel Santos','Noah Rodrigues','Dinis Silva'],events:['Treino U9 · 03/09 · 18:30','Jogo U9 · 05/09 · 10:00']},U11:{coach:'Miguel Lopes',players:['Mateus Pereira','Rafael Gomes','Diogo Alves','Afonso Silva'],events:['Treino U11 · 04/09 · 18:30']}};

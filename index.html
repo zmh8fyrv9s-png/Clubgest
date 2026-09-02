@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<title>ClubGest — FCD03</title>
+<style>
+:root{--red:#b51f2b;--red2:#8f1722;--ink:#15171b;--muted:#70757d;--line:#e9e9eb;--bg:#f6f6f7;--card:#fff;--green:#2f8a5a;--amber:#b77a16}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{max-width:520px;margin:auto;min-height:100vh;background:var(--bg);padding-bottom:84px}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:16px 18px 12px;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:11px}.crest{width:42px;height:42px;border-radius:12px;object-fit:cover;background:#eee}.brand b{font-size:18px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.role{margin-left:auto;border:1px solid var(--line);padding:7px 10px;border-radius:12px;background:#fff;font-size:11px}
+main{padding:18px}.hero{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}.hero h1{margin:0;font-size:27px;letter-spacing:-.5px}.hero p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.lang{display:flex;gap:6px;background:#fff;border:1px solid var(--line);padding:4px;border-radius:11px}.lang button{border:0;background:transparent;padding:6px 8px;border-radius:8px;font-size:11px}.lang .on{background:#f3dfe1;color:var(--red);font-weight:700}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px}.stat b{font-size:25px}.stat span{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.card{background:#fff;border:1px solid var(--line);border-radius:19px;padding:16px;margin-top:12px}.card h3{margin:0 0 10px;font-size:15px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid #f0f0f1}.row:last-child{border-bottom:0}.muted{color:var(--muted);font-size:12px}.pill{font-size:10px;padding:6px 8px;border-radius:9px;background:#f1f1f2}.ok{color:var(--green);background:#e8f5ee}.wait{color:var(--amber);background:#fff4df}.accent{color:var(--red)}
+.btn{border:0;background:var(--red);color:#fff;border-radius:12px;padding:10px 13px;font-weight:700;font-size:12px}.btn.light{background:#f6e5e7;color:var(--red)}.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.section{display:none}.section.active{display:block}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:8}.nav{border:0;background:none;color:#8a8d93;font-size:10px;display:flex;flex-direction:column;gap:4px;align-items:center;padding:5px 8px}.nav.active{color:var(--red);font-weight:800}.ico{font-size:18px}
+.avatar{width:36px;height:36px;border-radius:12px;background:#eee;display:grid;place-items:center;font-weight:800;color:#555}.player{display:flex;align-items:center;gap:10px}.player strong{font-size:13px}.player small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.toggle{display:flex;border:1px solid var(--line);border-radius:11px;overflow:hidden}.toggle button{border:0;background:#fff;padding:7px 9px;font-size:10px}.toggle .sel{background:#e7f5ed;color:var(--green);font-weight:800}
+.search{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px 12px;outline:none}.search:focus{border-color:#d5a1a6}
+.itemtitle{font-weight:750;font-size:13px}.date{font-size:11px;color:var(--muted);margin-top:4px}
+.tabbar{display:flex;gap:7px;overflow:auto;margin:0 0 12px}.tabbar button{white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-size:11px}.tabbar .sel{background:#15171b;color:#fff;border-color:#15171b}
+.notice{background:#fff7f7;border:1px solid #efd4d7;border-radius:16px;padding:13px}.notice b{font-size:12px}.notice p{font-size:11px;color:#666;margin:5px 0 0;line-height:1.45}
+.kicker{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:20;padding:25px 15px}.modal.show{display:block}.sheet{max-width:520px;margin:auto;margin-top:auto;background:#fff;border-radius:22px;padding:18px;max-height:88vh;overflow:auto}.close{float:right;border:0;background:#f2f2f2;border-radius:10px;padding:7px 10px}
+@media(min-width:700px){body{padding:20px}.app{border-radius:24px;overflow:hidden;box-shadow:0 15px 60px rgba(0,0,0,.08)}.bottom{position:fixed}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand">
+    <div class="crest" id="crest">⚽</div>
+    <div><b>ClubGest</b><small>FCD03 · Saison 2026/2027</small></div>
+    <select class="role" id="role" onchange="switchRole(this.value)">
+      <option value="parent">Parent</option><option value="coach">Coach</option><option value="admin">Admin</option>
+    </select>
+  </div>
+</header>
+
+<main>
+<section id="home" class="section active">
+ <div class="hero"><div><h1 id="hello">Bonjour 👋</h1><p>Tout ce qui compte pour le club, au même endroit.</p></div><div class="lang"><button class="on" onclick="setLang('fr')">FR</button><button onclick="setLang('pt')">PT</button></div></div>
+ <div class="grid">
+  <div class="stat"><b>6</b><span>Joueurs U9</span></div><div class="stat"><b>5/6</b><span>Présents au dernier entraînement</span></div>
+  <div class="stat"><b>1</b><span>Match à venir</span></div><div class="stat"><b>2</b><span>Notifications</span></div>
+ </div>
+ <div class="card"><div class="kicker">Aujourd'hui</div><h3>⚽ Entraînement U9</h3><div class="row"><div><div class="itemtitle">18:30 · Campo Municipal 2</div><div class="date">Treino U9</div></div><span class="pill ok">Présence confirmée</span></div></div>
+ <div class="card"><div class="kicker">Prochain match</div><h3>🏆 FCD03 U9 × Racing FC</h3><div class="row"><div><div class="itemtitle">Samedi · 10:00</div><div class="date">Campo Municipal 2</div></div><button class="btn light" onclick="openModal('match')">Voir</button></div></div>
+ <div class="card"><h3>🔔 À faire</h3><div class="notice"><b>Convocation U9</b><p>Confirme la présence de Lucas pour le prochain match.</p><button class="btn" style="margin-top:10px" onclick="confirmCallup()">Confirmer</button></div></div>
+</section>
+
+<section id="calendar" class="section">
+ <div class="hero"><div><h1>Calendrier</h1><p>Entraînements, matchs et événements.</p></div></div>
+ <div class="tabbar"><button class="sel">Cette semaine</button><button>Ce mois</button><button>Saison</button></div>
+ <div class="card"><div class="row"><div><div class="kicker">Aujourd'hui</div><div class="itemtitle">⚽ U9 · Entraînement</div><div class="date">18:30 · Campo Municipal 2</div></div><span class="pill">U9</span></div><div class="row"><div><div class="kicker">Samedi</div><div class="itemtitle">🏆 U9 · FCD03 × Racing FC</div><div class="date">10:00 · Campo Municipal 2</div></div><span class="pill">Match</span></div></div>
+</section>
+
+<section id="attendance" class="section">
+ <div class="hero"><div><h1>Présences</h1><p>Sélectionne les joueurs présents.</p></div></div>
+ <div class="card"><div class="row"><div><b>U9 · Aujourd'hui 18:30</b><div class="date">6 joueurs · Campo Municipal 2</div></div><span class="pill ok" id="count">4/6</span></div>
+  <div id="players"></div>
+  <button class="btn" style="width:100%;margin-top:10px" onclick="saveAttendance()">Enregistrer les présences</button>
+ </div>
+</section>
+
+<section id="games" class="section">
+ <div class="hero"><div><h1>Matchs</h1><p>Calendrier, convocations et résultats.</p></div></div>
+ <div class="card"><div class="kicker">À venir</div><h3>FCD03 U9 × Racing FC</h3><div class="row"><div>Samedi 5 septembre · 10:00<div class="date">Campo Municipal 2 · À domicile</div></div><span class="pill wait">Convocation</span></div><div class="row"><span class="muted">Joueurs convoqués</span><b>6</b></div><button class="btn" onclick="openModal('match')">Ouvrir le match</button></div>
+ <div class="card"><div class="kicker">Dernier résultat</div><h3>FCD03 U9 <span class="accent">3 — 2</span> Racing FC</h3><span class="pill ok">Victoire</span></div>
+</section>
+
+<section id="playersSection" class="section">
+ <div class="hero"><div><h1>Joueurs</h1><p>Plantel U9 · 6 joueurs</p></div></div>
+ <input class="search" placeholder="Rechercher un joueur..." oninput="filterPlayers(this.value)">
+ <div class="card" id="playerList"></div>
+</section>
+
+<section id="messages" class="section">
+ <div class="hero"><div><h1>Messages</h1><p>Communication du club.</p></div><button class="btn">Nouveau</button></div>
+ <div class="card"><div class="row"><div class="player"><div class="avatar">FC</div><div><strong>FCD03 U9</strong><small>Coach · Demain, 09:30</small></div></div><span class="pill ok">Nouveau</span></div><div class="row"><div class="player"><div class="avatar">AD</div><div><strong>Administration FCD03</strong><small>Bienvenue sur ClubGest</small></div></div></div></div>
+</section>
+
+<section id="admin" class="section">
+ <div class="hero"><div><h1>Administration</h1><p>Vue globale du club.</p></div></div>
+ <div class="grid"><div class="stat"><b>1</b><span>Équipe</span></div><div class="stat"><b>6</b><span>Joueurs</span></div><div class="stat"><b>1</b><span>Match</span></div><div class="stat"><b>83%</b><span>Présence</span></div></div>
+ <div class="card"><h3>Gestion rapide</h3><div class="row"><span>👥 Équipes & joueurs</span><button class="btn ghost" onclick="go('playersSection')">Ouvrir</button></div><div class="row"><span>📅 Calendrier</span><button class="btn ghost" onclick="go('calendar')">Ouvrir</button></div><div class="row"><span>📰 Nouveautés</span><button class="btn ghost">Gérer</button></div><div class="row"><span>💶 Paiements</span><span class="pill wait">2 en attente</span></div><div class="row"><span>📄 Documents</span><button class="btn ghost">Gérer</button></div><div class="row"><span>📊 Rapports</span><button class="btn ghost">Voir</button></div></div>
+</section>
+
+<section id="profile" class="section">
+ <div class="hero"><div><h1>Profil</h1><p>Compte et préférences.</p></div></div>
+ <div class="card"><div class="player"><div class="avatar">SF</div><div><strong>Sérgio</strong><small>Parent · FCD03</small></div></div></div>
+ <div class="card"><h3>🌍 Langue / Língua</h3><div class="lang"><button class="on" onclick="setLang('fr')">🇫🇷 Français</button><button onclick="setLang('pt')">🇵🇹 Português</button></div></div>
+ <div class="card"><h3>Compte</h3><div class="row"><span>Notifications</span><span class="pill ok">Activées</span></div><div class="row"><span>Sécurité</span><span class="muted">Mot de passe · ••••••</span></div></div>
+</section>
+</main>
+
+
+<div id="rolePanel" style="display:none"></div>
+<script>
+const roleData={
+ parent:{title:"Espace famille",items:["Mes enfants","Présences","Prochains matchs","Actualités","Messages","Documents","Paiements","Notifications"]},
+ coach:{title:"Espace entraîneur",items:["Mon équipe","Présences","Entraînements","Matchs","Convocations","Résultats","Statistiques","Messages"]},
+ admin:{title:"Administration du club",items:["Équipes","Joueurs","Entraîneurs","Calendrier","Matchs","Actualités","Paiements","Documents","Rapports","Paramètres"]}
+};
+function rolePanelRender(role){
+ const p=document.getElementById('rolePanel'); const d=roleData[role];
+ p.style.display='block';
+ p.innerHTML='<div class="card"><div class="kicker">'+d.title+'</div>'+
+ d.items.map((x,i)=>'<div class="row"><span>'+x+'</span><span class="pill">'+(i===0?'Ouvrir':'›')+'</span></div>').join('')+
+ '</div>';
+}
+const oldSwitchRole=switchRole;
+switchRole=function(v){rolePanelRender(v); oldSwitchRole(v)};
+rolePanelRender(document.getElementById('role').value);
+</script>
+
+<nav class="bottom">
+ <button class="nav active" onclick="go('home',this)"><span class="ico">⌂</span>Accueil</button>
+ <button class="nav" onclick="go('calendar',this)"><span class="ico">◫</span>Calendrier</button>
+ <button class="nav" onclick="go('attendance',this)"><span class="ico">✓</span>Présences</button>
+ <button class="nav" onclick="go('games',this)"><span class="ico">⚽</span>Matchs</button>
+ <button class="nav" onclick="go('profile',this)"><span class="ico">◯</span>Profil</button>
+</nav>
+</div>
+
+<div class="modal" id="modal"><div class="sheet"><button class="close" onclick="closeModal()">✕</button><div id="modalBody"></div></div></div>
+
+<script>
+const names=["Lucas Ferreira","Tomás Martins","Enzo Costa","Gabriel Santos","Noah Rodrigues","Dinis Silva"];
+let present=[true,true,true,false,true,false];
+const pt={Accueil:"Início",Calendrier:"Calendário",Présences:"Presenças",Matchs:"Jogos",Profil:"Perfil"};
+function go(id,btn){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');else document.querySelector('.nav').classList.add('active');window.scrollTo(0,0)}
+function renderAttendance(){let el=document.getElementById('players');el.innerHTML=names.map((n,i)=>`<div class="row"><div class="player"><div class="avatar">${n.split(' ').map(x=>x[0]).join('').slice(0,2)}</div><div><strong>${n}</strong><small>U9</small></div></div><div class="toggle"><button class="${present[i]?'sel':''}" onclick="setPresent(${i},true)">Présent</button><button class="${!present[i]?'sel':''}" onclick="setPresent(${i},false)">Absent</button></div></div>`).join('');document.getElementById('count').textContent=present.filter(Boolean).length+"/6"}
+function setPresent(i,v){present[i]=v;renderAttendance()}
+function saveAttendance(){alert("Présences enregistrées ✓")}
+function renderPlayers(filter=""){let arr=names.filter(n=>n.toLowerCase().includes(filter.toLowerCase()));document.getElementById('playerList').innerHTML=arr.map(n=>`<div class="row" onclick="openPlayer('${n}')"><div class="player"><div class="avatar">${n.split(' ').map(x=>x[0]).join('').slice(0,2)}</div><div><strong>${n}</strong><small>U9 · Saison 2026/2027</small></div></div><span>›</span></div>`).join('')}
+function filterPlayers(v){renderPlayers(v)}
+function openPlayer(n){openModal('player',n)}
+function openModal(type,name){let b=document.getElementById('modalBody');if(type==='match')b.innerHTML=`<div class="kicker">Match</div><h2>FCD03 U9 × Racing FC</h2><p class="muted">Samedi 5 septembre · 10:00<br>Campo Municipal 2</p><div class="card"><h3>Convocation</h3><div class="row"><span>Lucas Ferreira</span><span class="pill ok">Confirmé</span></div><div class="row"><span>5 autres joueurs</span><span class="pill">Convoqués</span></div></div><button class="btn" onclick="confirmCallup()">Confirmer ma présence</button>`;else b.innerHTML=`<div class="kicker">Fiche joueur</div><h2>${name}</h2><div class="card"><div class="row"><span>Équipe</span><b>U9</b></div><div class="row"><span>Présences</span><b>5/6 · 83%</b></div><div class="row"><span>Matchs</span><b>1</b></div><div class="row"><span>Convocations</span><b>1</b></div></div><div class="card"><h3>Responsables</h3><p class="muted">Accès sécurisé aux responsables associés.</p></div>`;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function confirmCallup(){alert("Convocation confirmée ✓");closeModal()}
+function switchRole(v){if(v==='admin')go('admin');else if(v==='coach')go('attendance');else go('home')}
+function setLang(l){localStorage.setItem('clubgest_lang',l);document.documentElement.lang=l;document.querySelectorAll('.lang button').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.lang button').forEach(x=>{if((l==='fr'&&x.textContent.includes('FR'))||(l==='pt'&&x.textContent.includes('PT')))x.classList.add('on')});if(l==='pt'){document.querySelector('.top small').textContent='FCD03 · Época 2026/2027';document.querySelector('#hello').textContent='Olá 👋'}else{document.querySelector('.top small').textContent='FCD03 · Saison 2026/2027';document.querySelector('#hello').textContent='Bonjour 👋'}}
+renderAttendance();renderPlayers();setLang(localStorage.getItem('clubgest_lang')||'fr');
+</script>
+<div style="max-width:520px;margin:0 auto;padding:8px 18px 20px;color:#888;font-size:10px;text-align:center">
+ClubGest · Prototype fonctionnel FCD03 · prêt pour intégration Supabase
+</div>
+</body></html>

@@ -1,7 +1,13 @@
 (function(){
 'use strict';
+function roleUI(){
+ const role=localStorage.getItem('cgRole')||'';document.body.dataset.cgRole=role;
+ const man=document.getElementById('n-man');if(man)man.style.display=(role==='parent'||role==='player')?'none':'';
+ const att=document.getElementById('n-att');if(att)att.style.display=role==='player'?'none':'';
+ const manage=document.getElementById('manage');if(manage&&role==='player')manage.innerHTML='<div class="hero"><div><span class="kicker">FCD03 · ÁREA DO JOGADOR</span><h1>O teu futebol começa aqui.</h1><p>Equipa, agenda e atividades — simples e direto.</p></div><div class="crest">⚽</div></div>';
+}
 function boot(){
- if(document.getElementById('fcd03-theme'))return;
+ if(document.getElementById('fcd03-theme')){roleUI();return}
  const s=document.createElement('style');s.id='fcd03-theme';s.textContent=`
 :root{--ink:#111;--muted:#667085;--line:#e6e6e6;--soft:#f5f5f5;--dark:#090909;--brand:#fd0200;--brand2:#b90000;--white:#fff;--radius:20px}
 body{background:linear-gradient(180deg,#f7f7f7 0,#fff 35%,#f4f4f4 100%)}
@@ -13,6 +19,8 @@ body{background:linear-gradient(180deg,#f7f7f7 0,#fff 35%,#f4f4f4 100%)}
  document.head.appendChild(s);
  const main=document.querySelector('.main');
  if(main&&!document.getElementById('fcd-banner')){const b=document.createElement('div');b.id='fcd-banner';b.className='fcd-banner';b.innerHTML='<img src="https://upload.wikimedia.org/wikipedia/commons/8/8b/Logo_fcd_grand.svg"><div><b>FC DÉIFFERDENG 03</b><span>ClubGest · Formação · U7 · U9 · U11</span></div>';main.prepend(b)}
+ roleUI();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+setInterval(roleUI,1000);
 })();

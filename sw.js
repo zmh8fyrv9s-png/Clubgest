@@ -1,10 +1,11 @@
-const CACHE='clubgest-v5';
-const ASSETS=['/','/index.html','/manifest.webmanifest','/icon-192.svg','/icon-512.svg','/access.js','/fcd03-theme.js','/profile-fix.js'];
+const CACHE='clubgest-v6';
+const ASSETS=['/','/index.html','/manifest.webmanifest','/icon-192.svg','/icon-512.svg','/access.js','/fcd03-theme.js','/profile-fix.js','/profile-lock.js'];
 function inject(text){
   let out=text;
   if(!out.includes('/access.js'))out=out.replace('</body>','<script src="/access.js"></script></body>');
   if(!out.includes('/fcd03-theme.js'))out=out.replace('</body>','<script src="/fcd03-theme.js"></script></body>');
   if(!out.includes('/profile-fix.js'))out=out.replace('</body>','<script src="/profile-fix.js"></script></body>');
+  if(!out.includes('/profile-lock.js'))out=out.replace('</body>','<script src="/profile-lock.js"></script></body>');
   return new Response(out,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'}})
 }
 self.addEventListener('install',event=>event.waitUntil(

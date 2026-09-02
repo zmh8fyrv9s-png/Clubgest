@@ -1,7 +1,16 @@
-const CACHE='clubgest-v17';
-const ASSETS=['/','/index.html','/manifest.webmanifest?v=15','/icon-192.svg?v=15','/icon-512.svg?v=15','/access.js?v=15','/fcd03-theme.js?v=15','/cg-brand.js?v=15','/profile-fix.js?v=15','/profile-lock.js?v=15','/clubgest-data.js?v=15','/clubgest-recovery.js'];
-const PREBOOT=`<script>(function(){try{var k='clubgest_v3',g='cgPrebootGuardV2',raw=localStorage.getItem(k),d=raw?JSON.parse(raw):null;var ok=d&&d.teams&&typeof d.teams==='object'&&d.attendance&&typeof d.attendance==='object'&&d.selected&&d.teams[d.selected]&&typeof d.teams[d.selected]==='object';if(raw&&!ok)localStorage.removeItem(k);window.addEventListener('error',function(){try{if(sessionStorage.getItem(g)==='1')return;sessionStorage.setItem(g,'1');localStorage.removeItem(k);location.reload()}catch(e){}});window.addEventListener('unhandledrejection',function(){try{if(sessionStorage.getItem(g)==='1')return;sessionStorage.setItem(g,'1');localStorage.removeItem(k);location.reload()}catch(e){}})}catch(e){try{localStorage.removeItem('clubgest_v3')}catch(_){}}})();</script>`;
-function inject(text){return new Response(text,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'}})}
-self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(async c=>{for(const u of ASSETS){try{const r=await fetch(u,{cache:'no-store'});if(r.ok)await c.put(u.split('?')[0],r)}catch(e){}}}).then(()=>self.skipWaiting())));
-self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);const html=url.pathname==='/'||url.pathname==='/index.html';if(html){event.respondWith(fetch(event.request,{cache:'no-store'}).then(async r=>{if(r.ok){const text=await r.text();let out=text.replace('</head>',PREBOOT+'</head>');if(!out.includes('/clubgest-recovery.js'))out=out.replace('</body>','<script src="/clubgest-recovery.js"></script></body>');const res=inject(out);caches.open(CACHE).then(c=>c.put('/index.html',res.clone()));return res}return caches.match('/index.html')}).catch(()=>caches.match('/index.html')));return}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(url.pathname,copy));return r}).catch(()=>caches.match('/index.html'))))});
+const CACHE='clubgest-v18';
+
+self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
+
+self.addEventListener('activate',event=>event.waitUntil(
+  caches.keys()
+    .then(keys=>Promise.all(keys.map(k=>caches.delete(k))))
+    .then(()=>self.clients.claim())
+));
+
+self.addEventListener('fetch',event=>{
+  if(event.request.method!=='GET') return;
+  const url=new URL(event.request.url);
+  if(url.origin!==self.location.origin) return;
+  event.respondWith(fetch(event.request,{cache:'no-store'}));
+});

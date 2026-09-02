@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c8102e">
+<title>ClubGest — FCD03 Differdange</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f6f8;color:#17191d}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh}.top{background:#fff;border-bottom:1px solid #e7e8eb;position:sticky;top:0;z-index:5}.topin{max-width:1100px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;flex:1}.crest{width:42px;height:42px;border-radius:12px;background:#c8102e;color:#fff;display:grid;place-items:center;font-size:21px}.brand small{display:block;color:#777;font-weight:500}.lang{border:1px solid #ddd;background:#fff;border-radius:10px;padding:8px 10px}.main{max-width:1100px;margin:auto;padding:22px 18px 100px}.hero{background:linear-gradient(135deg,#fff 0%,#fff 60%,#fff2f4);border:1px solid #eee;border-radius:24px;padding:24px;display:flex;justify-content:space-between;gap:18px;align-items:center}.hero h1{margin:0 0 6px;font-size:28px}.muted{color:#70747b}.pill{display:inline-flex;padding:7px 11px;border-radius:999px;background:#fbe8ec;color:#a70d27;font-size:12px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}.card{background:#fff;border:1px solid #e8e9ec;border-radius:18px;padding:18px;box-shadow:0 4px 16px #00000006}.stat b{font-size:28px;display:block;margin-top:7px}.section{margin-top:22px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section h2{font-size:18px;margin:0}.actions{display:flex;flex-wrap:wrap;gap:9px}.btn{padding:11px 14px;border-radius:11px;background:#17191d;color:#fff;font-weight:700}.btn.red{background:#c8102e}.btn.light{background:#f0f1f3;color:#202228}.list{display:grid;gap:9px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;background:#fff;border:1px solid #e8e9ec;border-radius:14px}.avatar{width:38px;height:38px;border-radius:12px;background:#f1f2f4;display:grid;place-items:center;font-weight:800}.left{display:flex;align-items:center;gap:11px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;z-index:10}.navin{max-width:700px;margin:auto;display:flex;justify-content:space-around}.nav button{background:none;padding:10px 7px;color:#686c73;font-size:11px}.nav button.active{color:#c8102e;font-weight:800}.nav span{display:block;font-size:20px;margin-bottom:2px}.screen{display:none}.screen.active{display:block}.form{display:grid;gap:11px}.form input,.form select,.form textarea{width:100%;padding:12px;border:1px solid #dfe1e5;border-radius:11px;background:#fff}.modal{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;z-index:20}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:90vh;overflow:auto;border-radius:22px 22px 0 0;padding:20px}.check{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #e5e6e9;border-radius:12px}.check input{width:20px;height:20px}.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#17191d;color:#fff;padding:12px 16px;border-radius:12px;display:none;z-index:30}.toast.show{display:block}@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.hero{align-items:flex-start}.hero h1{font-size:23px}}@media(min-width:761px){.nav{position:static;border:0;background:transparent}.navin{justify-content:flex-start;gap:4px}.nav button{padding:10px 13px}.main{padding-bottom:30px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="topin">
+<div class="brand"><div class="crest">⚽</div><div>ClubGest<small>FCD03 Differdange</small></div></div>
+<select class="lang" id="lang" onchange="setLang(this.value)"><option value="pt">Português</option><option value="fr">Français</option><option value="en">English</option></select>
+<select class="lang" id="role" onchange="setRole(this.value)"><option value="parent">Parent</option><option value="coach">Coach</option><option value="admin">Admin</option></select>
+</div></header>
+
+<main class="main">
+<section id="home" class="screen active"></section>
+<section id="attendance" class="screen"></section>
+<section id="calendar" class="screen"></section>
+<section id="manage" class="screen"></section>
+</main>
+
+<nav class="nav"><div class="navin">
+<button onclick="go('home')" id="n-home"><span>⌂</span><i data-k="home">Início</i></button>
+<button onclick="go('attendance')" id="n-att"><span>✓</span><i data-k="attendance">Presenças</i></button>
+<button onclick="go('calendar')" id="n-cal"><span>▣</span><i data-k="calendar">Calendário</i></button>
+<button onclick="go('manage')" id="n-man"><span>⚙</span><i data-k="manage">Gestão</i></button>
+</div></nav>
+</div>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const T={
+pt:{home:"Início",attendance:"Presenças",calendar:"Calendário",manage:"Gestão",welcome:"Bem-vindo ao ClubGest",club:"FCD03 Differdange",next:"Próximos eventos",training:"Treino",match:"Jogo",present:"Presente",absent:"Ausente",save:"Guardar",cancel:"Cancelar",players:"Jogadores",team:"Equipa U9",news:"Notícias",edit:"Editar",add:"Adicionar",admin:"Administração",coach:"Treinador",parent:"Encarregado",onlychild:"Só podes confirmar a presença do teu filho.",mychild:"O meu filho",attendanceSaved:"Presença guardada.",newplayer:"Novo jogador",name:"Nome",number:"Número",position:"Posição",create:"Criar",created:"Criado com sucesso.",trainingAt:"Hoje · 18:30",matchAt:"Sábado · 10:00",opponent:"Racing FC",field:"Campo Municipal 2",finance:"Pagamentos",messages:"Mensagens"},
+fr:{home:"Accueil",attendance:"Présences",calendar:"Calendrier",manage:"Gestion",welcome:"Bienvenue sur ClubGest",club:"FCD03 Differdange",next:"Prochains événements",training:"Entraînement",match:"Match",present:"Présent",absent:"Absent",save:"Enregistrer",cancel:"Annuler",players:"Joueurs",team:"Équipe U9",news:"Actualités",edit:"Modifier",add:"Ajouter",admin:"Administration",coach:"Entraîneur",parent:"Parent",onlychild:"Vous pouvez confirmer uniquement la présence de votre enfant.",mychild:"Mon enfant",attendanceSaved:"Présence enregistrée.",newplayer:"Nouveau joueur",name:"Nom",number:"Numéro",position:"Poste",create:"Créer",created:"Créé avec succès.",trainingAt:"Aujourd'hui · 18:30",matchAt:"Samedi · 10:00",opponent:"Racing FC",field:"Campo Municipal 2",finance:"Paiements",messages:"Messages"},
+en:{home:"Home",attendance:"Attendance",calendar:"Calendar",manage:"Management",welcome:"Welcome to ClubGest",club:"FCD03 Differdange",next:"Upcoming events",training:"Training",match:"Match",present:"Present",absent:"Absent",save:"Save",cancel:"Cancel",players:"Players",team:"U9 Team",news:"News",edit:"Edit",add:"Add",admin:"Administration",coach:"Coach",parent:"Parent",onlychild:"You can only confirm attendance for your own child.",mychild:"My child",attendanceSaved:"Attendance saved.",newplayer:"New player",name:"Name",number:"Number",position:"Position",create:"Create",created:"Created successfully.",trainingAt:"Today · 18:30",matchAt:"Saturday · 10:00",opponent:"Racing FC",field:"Campo Municipal 2",finance:"Payments",messages:"Messages"}
+};
+let lang=localStorage.cgLang||"pt", role=localStorage.cgRole||"parent";
+let players=JSON.parse(localStorage.cgPlayers||JSON.stringify(["Lucas Ferreira","Tomás Martins","Enzo Costa","Gabriel Santos","Noah Rodrigues","Dinis Silva"]));
+const $=id=>document.getElementById(id), t=k=>T[lang][k]||T.pt[k]||k;
+function setLang(v){lang=v;localStorage.cgLang=v;render()}
+function setRole(v){role=v;localStorage.cgRole=v;render()}
+function initials(n){return n.split(" ").map(x=>x[0]).slice(0,2).join("")}
+function go(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));$("n-"+({attendance:"att",calendar:"cal",manage:"man",home:"home"}[id])).classList.add("active");render()}
+function render(){
+$("lang").value=lang;$("role").value=role;
+$("n-att").style.display=role==="parent"||role==="coach"||role==="admin"?"block":"none";
+$("n-man").style.display=role==="admin"?"block":"none";
+home();attendance();calendar();manage();
+document.querySelectorAll("[data-k]").forEach(x=>x.textContent=t(x.dataset.k));
+}
+function home(){
+let roleName=t(role);
+$("home").innerHTML=`<div class="hero"><div><span class="pill">${roleName}</span><h1>${t("welcome")}</h1><div class="muted">${t("club")} · ${role==="coach"?t("team"):"2026/2027"}</div></div><div class="crest">⚽</div></div>
+<div class="grid"><div class="card stat"><span class="muted">${t("players")}</span><b>${role==="parent"?"1":players.length}</b></div><div class="card stat"><span class="muted">${t("training")}</span><b>18:30</b></div><div class="card stat"><span class="muted">${t("match")}</span><b>10:00</b></div><div class="card stat"><span class="muted">${t("news")}</span><b>1</b></div></div>
+<div class="section"><div class="sectionhead"><h2>${t("next")}</h2></div><div class="list">
+<div class="row"><div class="left"><div class="avatar">⚽</div><div><b>${t("training")}</b><div class="muted">${t("trainingAt")} · ${t("field")}</div></div></div><span class="pill">${t("team")}</span></div>
+<div class="row"><div class="left"><div class="avatar">VS</div><div><b>${t("match")} · ${t("opponent")}</b><div class="muted">${t("matchAt")} · ${t("field")}</div></div></div><span class="pill">${t("team")}</span></div></div></div>
+<div class="section"><div class="actions"><button class="btn red" onclick="go('attendance')">${t("attendance")}</button>${role==="admin"?`<button class="btn" onclick="go('manage')">${t("admin")}</button>`:""}</div></div>`;
+}
+function attendance(){
+if(role==="parent"){
+$("attendance").innerHTML=`<div class="sectionhead"><h2>${t("attendance")}</h2></div><div class="card"><span class="pill">${t("mychild")}</span><h2>Lucas Ferreira</h2><p class="muted">${t("onlychild")}</p><div class="actions"><button class="btn red" onclick="saveAttendance('Lucas Ferreira',true)">${t("present")}</button><button class="btn light" onclick="saveAttendance('Lucas Ferreira',false)">${t("absent")}</button></div></div>`;
+}else{
+$("attendance").innerHTML=`<div class="sectionhead"><h2>${t("attendance")}</h2><span class="pill">${t("team")}</span></div><div class="card"><p class="muted">${role==="coach"?t("coach"):t("admin")}</p><div class="list">${players.map((p,i)=>`<label class="check"><input type="checkbox" id="p${i}" ${i<4?"checked":""}> <span><b>${p}</b><small class="muted"> · U9</small></span></label>`).join("")}</div><br><button class="btn red" onclick="saveTeamAttendance()">${t("save")}</button></div>`;
+}}
+function saveAttendance(n,v){localStorage.setItem("cg_att_"+n,v);toast(t("attendanceSaved"))}
+function saveTeamAttendance(){toast(t("attendanceSaved"))}
+function calendar(){
+$("calendar").innerHTML=`<div class="sectionhead"><h2>${t("calendar")}</h2></div><div class="list"><div class="row"><div><b>${t("training")}</b><div class="muted">${t("trainingAt")} · ${t("field")}</div></div><span class="pill">${t("team")}</span></div><div class="row"><div><b>${t("match")} · ${t("opponent")}</b><div class="muted">${t("matchAt")} · ${t("field")}</div></div><span class="pill">${t("team")}</span></div></div>`;
+}
+function manage(){
+if(role!=="admin"){$("manage").innerHTML="";return}
+$("manage").innerHTML=`<div class="sectionhead"><h2>${t("admin")}</h2></div><div class="grid"><div class="card"><span class="muted">${t("players")}</span><b style="font-size:25px">${players.length}</b></div><div class="card"><span class="muted">${t("finance")}</span><b style="font-size:25px">€</b></div><div class="card"><span class="muted">${t("messages")}</span><b style="font-size:25px">3</b></div><div class="card"><span class="muted">${t("team")}</span><b style="font-size:25px">U9</b></div></div>
+<div class="section"><div class="sectionhead"><h2>${t("players")}</h2><button class="btn red" onclick="newPlayer()">${t("add")}</button></div><div class="list">${players.map((p,i)=>`<div class="row"><div class="left"><div class="avatar">${initials(p)}</div><div><b>${p}</b><div class="muted">U9 · #${i+1}</div></div></div><button class="btn light" onclick="editPlayer(${i})">${t("edit")}</button></div>`).join("")}</div></div>
+<div class="section"><div class="actions"><button class="btn light" onclick="toast('${t("created")}')">${t("training")}</button><button class="btn light" onclick="toast('${t("created")}')">${t("match")}</button><button class="btn light" onclick="toast('${t("created")}')">${t("news")}</button></div></div>`;
+}
+function newPlayer(){openForm(-1)}
+function editPlayer(i){openForm(i)}
+function openForm(i){
+let p=i>=0?players[i]:"";
+$("sheet").innerHTML=`<h2>${i>=0?t("edit"):t("newplayer")}</h2><div class="form"><label>${t("name")}<input id="pn" value="${p}"></label><label>${t("number")}<input id="pnum" value="${i>=0?i+1:""}" type="number"></label><label>${t("position")}<input id="ppos" value=""></label><div class="actions"><button class="btn light" onclick="closeModal()">${t("cancel")}</button><button class="btn red" onclick="savePlayer(${i})">${t("save")}</button></div></div>`;$("modal").classList.add("show")
+}
+function savePlayer(i){let n=$("pn").value.trim();if(!n)return;if(i<0)players.push(n);else players[i]=n;localStorage.cgPlayers=JSON.stringify(players);closeModal();render();toast(t("created"))}
+function closeModal(){$("modal").classList.remove("show")}
+function toast(s){$("toast").textContent=s;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),1800)}
+render();go("home");
+</script>
+</body>
+</html>

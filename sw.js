@@ -1,5 +1,6 @@
-const CACHE='clubgest-v1';
-const ASSETS=['/','/index.html','/manifest.webmanifest','/icon-192.svg','/icon-512.svg'];
-self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
-self.addEventListener('activate',event=>event.waitUntil(self.clients.claim()));
-self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(response=>{const copy=response.clone();caches.open(CACHE).then(c=>c.put(event.request,copy));return response}).catch(()=>caches.match('/index.html'))));});
+const CACHE='clubgest-v2';
+const ASSETS=['/','/index.html','/manifest.webmanifest','/icon-192.svg','/icon-512.svg','/access.js'];
+function inject(text){if(text.includes('/access.js'))return new Response(text,{headers:{'Content-Type':'text/html; charset=utf-8'}});return new Response(text.replace('</body>','<script src="/access.js"></script></body>'),{headers:{'Content-Type':'text/html; charset=utf-8'}})}
+self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(async c=>{for(const u of ASSETS){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){if(u==='/'||u==='/index.html'){const text=await r.text();c.put('/index.html',inject(text));}else c.put(u,r)}}catch(e){}}}).then(()=>self.skipWaiting())));
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',event=>{if(event.request.method!=='GET')return;const url=new URL(event.request.url);const html=url.pathname==='/'||url.pathname==='/index.html';if(html){event.respondWith(fetch(event.request,{cache:'no-store'}).then(async r=>{if(r.ok){const t=await r.text();const out=inject(t);const c=await caches.open(CACHE);c.put('/index.html',out.clone());return out}return caches.match('/index.html')}).catch(()=>caches.match('/index.html')));return}event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put(event.request,copy));return r}).catch(()=>caches.match('/index.html'))));});

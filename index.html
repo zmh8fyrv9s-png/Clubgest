@@ -1,0 +1,1542 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c8102e">
+<title>ClubGest — FCD03 Differdange</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f6f8;color:#17191d}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.app{min-height:100vh}.top{background:#fff;border-bottom:1px solid #e7e8eb;position:sticky;top:0;z-index:5}.topin{max-width:1100px;margin:auto;padding:14px 18px;display:flex;align-items:center;gap:12px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;flex:1}.crest{width:42px;height:42px;border-radius:12px;background:#c8102e;color:#fff;display:grid;place-items:center;font-size:21px}.brand small{display:block;color:#777;font-weight:500}.lang{border:1px solid #ddd;background:#fff;border-radius:10px;padding:8px 10px}.main{max-width:1100px;margin:auto;padding:22px 18px 100px}.hero{background:linear-gradient(135deg,#fff 0%,#fff 60%,#fff2f4);border:1px solid #eee;border-radius:24px;padding:24px;display:flex;justify-content:space-between;gap:18px;align-items:center}.hero h1{margin:0 0 6px;font-size:28px}.muted{color:#70747b}.pill{display:inline-flex;padding:7px 11px;border-radius:999px;background:#fbe8ec;color:#a70d27;font-size:12px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}.card{background:#fff;border:1px solid #e8e9ec;border-radius:18px;padding:18px;box-shadow:0 4px 16px #00000006}.teamselect{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.playerphoto{width:56px;height:56px;border-radius:16px;object-fit:cover;background:#f1f2f4;display:grid;place-items:center;font-weight:800}.profilegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}@media(max-width:600px){.profilegrid{grid-template-columns:1fr}}.teamselect select{min-width:170px}.stat b{font-size:28px;display:block;margin-top:7px}.section{margin-top:22px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.section h2{font-size:18px;margin:0}.actions{display:flex;flex-wrap:wrap;gap:9px}.btn{padding:11px 14px;border-radius:11px;background:#17191d;color:#fff;font-weight:700}.btn.red{background:#c8102e}.btn.light{background:#f0f1f3;color:#202228}.list{display:grid;gap:9px}.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;background:#fff;border:1px solid #e8e9ec;border-radius:14px}.avatar{width:38px;height:38px;border-radius:12px;background:#f1f2f4;display:grid;place-items:center;font-weight:800}.left{display:flex;align-items:center;gap:11px}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;z-index:10}.navin{max-width:700px;margin:auto;display:flex;justify-content:space-around}.nav button{background:none;padding:10px 7px;color:#686c73;font-size:11px}.nav button.active{color:#c8102e;font-weight:800}.nav span{display:block;font-size:20px;margin-bottom:2px}.screen{display:none}.screen.active{display:block}.form{display:grid;gap:11px}.form input,.form select,.form textarea{width:100%;padding:12px;border:1px solid #dfe1e5;border-radius:11px;background:#fff}.modal{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;z-index:20}.modal.show{display:flex}.sheet{background:#fff;width:100%;max-height:90vh;overflow:auto;border-radius:22px 22px 0 0;padding:20px}.check{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #e5e6e9;border-radius:12px}.check input{width:20px;height:20px}.toast{position:fixed;left:50%;bottom:82px;transform:translateX(-50%);background:#17191d;color:#fff;padding:12px 16px;border-radius:12px;display:none;z-index:30}.toast.show{display:block}@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.hero{align-items:flex-start}.hero h1{font-size:23px}}@media(min-width:761px){.nav{position:static;border:0;background:transparent}.navin{justify-content:flex-start;gap:4px}.nav button{padding:10px 13px}.main{padding-bottom:30px}}
+.teamhero{background:linear-gradient(135deg,#17191d 0%,#2b2e34 100%);color:#fff;border-radius:24px;padding:22px;margin-bottom:14px}.teamhero .muted{color:#c9cbd0}.tabs{display:flex;gap:7px;overflow:auto;padding:5px;background:#fff;border:1px solid #e8e9ec;border-radius:14px;margin-bottom:14px}.tabs button{white-space:nowrap;background:transparent;padding:10px 13px;border-radius:10px;color:#666;font-weight:700}.tabs button.active{background:#c8102e;color:#fff}.tabpane{display:none}.tabpane.active{display:block}.teammeta{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:600px){.teammeta{grid-template-columns:1fr 1fr}}.appfooter{text-align:center;color:#8a8d93;font-size:11px;padding:0 18px 18px}@media(min-width:761px){.appfooter{max-width:1100px;margin:auto}}
+
+.days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin:10px 0}
+.day-chip{border:1px solid #e5e7eb;background:#fff;border-radius:12px;padding:10px 5px;text-align:center;cursor:pointer}
+.day-chip input{display:none}.day-chip:has(input:checked){background:#111827;color:#fff;border-color:#111827}
+.day-chip small{display:block;font-size:11px;margin-top:3px}
+@media(max-width:700px){.days-grid{grid-template-columns:repeat(4,1fr)}}
+
+
+.home-priority{margin:8px 0 18px;padding:18px;border:1px solid #e5e7eb;border-radius:18px;background:#fff}
+.home-priority-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.home-priority h2{margin:0 0 3px;font-size:20px}.club-badge{font-size:11px;font-weight:700;padding:6px 9px;border-radius:999px;background:#f3f4f6}
+.priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.priority-card{display:flex;gap:10px;align-items:center;padding:12px;border-radius:13px;background:#f8fafc;min-width:0}
+.priority-card>span{font-size:21px}.priority-card small{display:block;color:#6b7280;font-size:11px}.priority-card strong{display:block;font-size:13px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.priority-actions{display:flex;gap:8px;margin-top:12px}
+@media(max-width:700px){.priority-grid{grid-template-columns:1fr}.priority-actions .btn{flex:1}}
+
+
+.parent-week-card{margin:8px 0 18px;padding:18px;border:1px solid #e5e7eb;border-radius:18px;background:#fff}
+.week-attendance-list{display:grid;gap:8px}.week-attendance-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;background:#f8fafc;border-radius:13px}
+.week-attendance-info{min-width:0}.week-attendance-info strong{display:block;font-size:13px}.week-attendance-info small{display:block;color:#6b7280;font-size:11px;margin-top:2px}
+.attendance-actions{display:flex;gap:5px;flex-shrink:0}.attendance-actions button{min-width:44px;padding:8px 7px;border:1px solid #d1d5db;background:#fff;border-radius:9px;cursor:pointer;font-size:12px}
+.attendance-actions button.active{background:#111827;color:#fff;border-color:#111827}.availability-game{border-left:3px solid #111827}
+
+
+.parent-child-profile{display:flex;align-items:center;gap:14px;margin:8px 0 12px;padding:16px 18px;border:1px solid #e5e7eb;border-radius:18px;background:#fff}
+.child-photo-wrap{width:68px;height:68px;border-radius:50%;overflow:hidden;background:#f1f5f9;flex:0 0 68px;display:flex;align-items:center;justify-content:center}
+.child-photo-wrap img{width:100%;height:100%;object-fit:cover}.child-initials{font-weight:800;font-size:20px;color:#374151;align-items:center;justify-content:center;width:100%;height:100%}
+.child-profile-main small{color:#6b7280;font-size:11px}.child-profile-main h2{margin:2px 0;font-size:19px}.child-profile-main p{margin:0;font-size:12px}
+.week-calendar{margin-top:10px}.calendar-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:9px}
+.calendar-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.calendar-day{position:relative;min-height:82px;border:1px solid #e5e7eb;border-radius:11px;padding:8px 4px;text-align:center;cursor:pointer;background:#fff}
+.calendar-day.today{border-color:#111827}.calendar-day small{display:block;color:#6b7280;font-size:10px}.calendar-day b{display:block;font-size:17px;margin:3px 0}.calendar-day.has-event{background:#f8fafc}.day-event{display:block;font-size:9px;line-height:1.2}.day-empty{display:block;color:#c4c7cc}.calendar-day em{position:absolute;right:4px;top:3px;font-style:normal;font-weight:800;font-size:12px}
+.parent-day-details{margin-top:10px}.parent-activity{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-radius:12px;background:#f8fafc}.parent-activity small{display:block;color:#6b7280;font-size:11px;margin-top:2px}
+@media(max-width:700px){.calendar-days{gap:3px}.calendar-day{min-height:76px;padding:7px 2px}.day-event{font-size:8px}.parent-child-profile{padding:14px}.child-photo-wrap{width:58px;height:58px;flex-basis:58px}}
+
+
+.coach-team-card{margin:8px 0 18px;padding:18px;border:1px solid #e5e7eb;border-radius:18px;background:#fff}
+.coach-team-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.coach-team-summary>div{padding:11px;border-radius:12px;background:#f8fafc}.coach-team-summary small{display:block;color:#6b7280;font-size:11px}.coach-team-summary strong{display:block;font-size:15px;margin-top:3px}
+.coach-status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.coach-status-card{padding:10px;border-radius:11px;background:#f8fafc}.coach-status-card strong{display:block;font-size:14px}.coach-status-card small{color:#6b7280;font-size:11px}
+.player-status-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid #eee}.player-status-row:last-child{border-bottom:0}
+.status-pill{font-size:10px;font-weight:700;padding:5px 8px;border-radius:999px;background:#f3f4f6}
+@media(max-width:700px){.coach-team-summary,.coach-status-grid{grid-template-columns:1fr 1fr}.coach-team-summary>div:last-child{grid-column:1/-1}}
+
+
+.coach-attendance-table-wrap{overflow-x:auto;margin-top:10px}
+.coach-attendance-table{width:100%;border-collapse:collapse;min-width:620px;font-size:12px}
+.coach-attendance-table th,.coach-attendance-table td{padding:9px 8px;border-bottom:1px solid #e5e7eb;text-align:center;white-space:nowrap}
+.coach-attendance-table th:first-child,.coach-attendance-table td:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1}
+.coach-attendance-table th{font-size:11px;color:#6b7280;font-weight:700;background:#f8fafc}
+.att-cell{font-weight:700;border-radius:8px;padding:5px 7px;display:inline-block;min-width:52px}
+.att-present{background:#ecfdf5}.att-absent{background:#fef2f2}.att-pending{background:#f3f4f6}
+
+
+.coach-attendance-table td .att-cell{cursor:pointer;user-select:none}
+.coach-attendance-table td .att-cell:hover{outline:2px solid #d1d5db}
+.coach-table-note{font-size:11px;color:#6b7280;margin-top:7px}
+.coach-next-match{margin:10px 0;padding:12px;border-radius:12px;background:#f8fafc}
+
+
+.convocation-top{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.convocation-count{padding:11px 13px;border-radius:12px;background:#f8fafc}
+.convocation-list{display:grid;gap:6px;margin-top:10px}.convocation-player{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid #e5e7eb;border-radius:11px;background:#fff}
+.convocation-player.selected{background:#f8fafc;border-color:#111827}.convocation-player label{display:flex;align-items:center;gap:9px;min-width:0}.convocation-player input{width:18px;height:18px}.convocation-status{font-size:10px;color:#6b7280}
+
+
+.convocation-confirm{margin-top:10px;padding:12px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
+.confirm-buttons{display:flex;gap:7px;margin-top:8px}.confirm-buttons button{flex:1}
+.confirmed-count{font-size:11px;color:#6b7280;margin-top:7px}
+
+
+.match-management-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.match-management-stat{padding:11px;border-radius:12px;background:#f8fafc}.match-management-stat small{display:block;color:#6b7280;font-size:10px}.match-management-stat strong{display:block;font-size:17px;margin-top:3px}
+.match-confirm-list{display:grid;gap:6px;margin-top:10px}.match-confirm-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 10px;border-bottom:1px solid #eee}
+.match-confirm-row small{color:#6b7280}.match-confirm-pill{font-size:10px;font-weight:700;padding:5px 8px;border-radius:999px;background:#f3f4f6}
+
+
+.training-picker{display:flex;gap:8px;flex-wrap:wrap}.training-picker button{border:1px solid #e5e7eb;background:#fff;border-radius:10px;padding:8px 10px;cursor:pointer}.training-picker button.active{background:#111827;color:#fff;border-color:#111827}
+.training-att-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid #eee}.training-att-actions{display:flex;gap:5px}.training-att-actions button{min-width:44px;padding:7px 6px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer}.training-att-actions button.active{background:#111827;color:#fff}
+.team-quick-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.team-quick-stat{padding:10px;border-radius:11px;background:#f8fafc}.team-quick-stat small{display:block;color:#6b7280;font-size:10px}.team-quick-stat strong{display:block;font-size:17px;margin-top:3px}
+@media(max-width:700px){.team-quick-stats{grid-template-columns:1fr 1fr}}
+
+
+.player-admin-list{display:grid;gap:7px;margin-top:10px}.player-admin-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border:1px solid #e5e7eb;border-radius:12px;background:#fff}
+.player-admin-main{display:flex;align-items:center;gap:9px;min-width:0}.player-mini-photo{width:38px;height:38px;border-radius:50%;object-fit:cover;background:#f1f5f9;display:flex;align-items:center;justify-content:center;font-weight:700;flex:0 0 38px}
+.player-admin-main strong{display:block;font-size:13px}.player-admin-main small{display:block;color:#6b7280;font-size:10px;margin-top:2px}.player-admin-actions{display:flex;gap:5px}.player-admin-actions button{padding:7px 9px;border:1px solid #d1d5db;background:#fff;border-radius:8px;cursor:pointer;font-size:11px}
+.player-inactive{opacity:.55}
+
+
+/* ClubGest modern visual refresh */
+:root{--cg-ink:#101828;--cg-muted:#667085;--cg-line:#eaecf0;--cg-soft:#f6f7f9;--cg-dark:#111827;--cg-radius:18px}
+body{background:#f4f6f8!important;color:var(--cg-ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header,.topbar,.app-header{background:linear-gradient(135deg,#111827 0%,#1f2937 100%)!important;color:#fff!important;border:0!important}
+.card,.panel,.modal-content{border:1px solid rgba(16,24,40,.07)!important;border-radius:var(--cg-radius)!important;box-shadow:0 8px 30px rgba(16,24,40,.055)!important;background:rgba(255,255,255,.96)!important}
+button,.btn{border-radius:11px!important;font-weight:650;transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+button:hover,.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:#111827!important;border-color:#111827!important;color:#fff!important;box-shadow:0 4px 12px rgba(17,24,39,.16)}
+input,select,textarea{border:1px solid #dfe3e8!important;border-radius:11px!important;background:#fff!important;min-height:42px}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(17,24,39,.08)!important;border-color:#98a2b3!important}
+nav,.bottom-nav,.nav{border-top:1px solid rgba(16,24,40,.08)!important;background:rgba(255,255,255,.92)!important;backdrop-filter:blur(14px)}
+.nav-item,.bottom-nav button{border-radius:12px!important}
+.home-priority,.parent-child-profile,.parent-week-card,.coach-team-card{border-radius:20px!important}
+.home-priority-head h2,.parent-child-profile h2{letter-spacing:-.02em}
+.priority-card,.coach-team-summary>div,.team-quick-stat,.convocation-count,.match-management-stat{border-radius:14px!important;background:#f7f8fa!important;border:1px solid #eef0f2}
+.calendar-day{border-radius:14px!important;transition:.15s}
+.calendar-day.today{box-shadow:inset 0 0 0 2px #111827!important}
+.smart-tools{display:none!important}
+.club-badge{background:#fff!important;color:#111827!important}
+.muted{color:var(--cg-muted)!important}
+h1,h2,h3{letter-spacing:-.025em}
+.section-head{margin-bottom:12px}
+.player-admin-row,.convocation-player,.week-attendance-row{border-radius:13px!important}
+.status-pill,.match-confirm-pill{border-radius:999px!important}
+@media(max-width:700px){
+  body{font-size:14px}
+  .card,.panel{box-shadow:0 5px 20px rgba(16,24,40,.045)!important}
+  .home-priority,.parent-child-profile,.parent-week-card,.coach-team-card{padding:15px!important}
+}
+
+
+.modern-welcome{display:flex;align-items:center;margin:4px 0 10px;padding:4px 2px}
+.modern-welcome .eyebrow{font-size:10px;letter-spacing:.16em;font-weight:800;color:#98a2b3}
+.modern-welcome h1{font-size:25px;margin:2px 0}.modern-welcome p{margin:0;color:#667085;font-size:12px}
+
+
+/* Parent home: child-first dashboard */
+.parent-child-hero{display:grid;grid-template-columns:82px 1fr auto;gap:16px;align-items:center;padding:18px;margin:8px 0 14px;background:linear-gradient(135deg,#111827,#263244);color:#fff;border-radius:22px;box-shadow:0 12px 30px rgba(16,24,40,.12)}
+.parent-child-hero .child-photo{width:82px;height:82px;border-radius:22px;object-fit:cover;background:#e5e7eb;border:3px solid rgba(255,255,255,.9)}
+.parent-child-hero .child-initials{width:82px;height:82px;border-radius:22px;display:grid;place-items:center;background:#374151;font-size:28px;font-weight:800;border:3px solid rgba(255,255,255,.18)}
+.parent-child-hero .eyebrow{font-size:10px;letter-spacing:.14em;font-weight:800;opacity:.65}
+.parent-child-hero h2{margin:3px 0;font-size:24px;letter-spacing:-.03em}
+.parent-child-hero p{margin:3px 0;opacity:.78}
+.parent-child-hero .child-number{font-size:30px;font-weight:850}
+.parent-week-title{display:flex;justify-content:space-between;align-items:end;margin:16px 2px 10px}
+.parent-week-title h3{margin:0}.parent-week-title span{font-size:12px;color:#667085}
+.parent-week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.parent-day-card{min-height:118px;padding:10px 8px;border:1px solid #e6e8eb;border-radius:16px;background:#fff;cursor:pointer}
+.parent-day-card .dow{font-size:11px;font-weight:800;color:#667085}.parent-day-card .date{font-size:18px;font-weight:800;margin:3px 0 8px}
+.parent-day-card .activity{font-size:11px;font-weight:750;line-height:1.25}.parent-day-card .presence{margin-top:8px;font-size:10px;font-weight:800;border-radius:999px;padding:5px 7px;display:inline-block;background:#f2f4f7;color:#475467}
+.parent-day-card.active{border-color:#111827;box-shadow:0 5px 16px rgba(16,24,40,.08)}
+@media(max-width:760px){.parent-child-hero{grid-template-columns:68px 1fr auto}.parent-child-hero .child-photo,.parent-child-hero .child-initials{width:68px;height:68px;border-radius:18px}.parent-child-hero h2{font-size:20px}.parent-week-grid{overflow-x:auto;grid-template-columns:repeat(7,minmax(92px,1fr));padding-bottom:4px}}
+
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="topin">
+<div class="brand"><div class="crest">⚽</div><div>ClubGest<small>FCD03 Differdange</small></div></div>
+<select class="lang" id="lang" onchange="setLang(this.value)"><option value="pt">Português</option><option value="fr">Français</option><option value="en">English</option></select>
+<select class="lang" id="role" onchange="setRole(this.value)"><option value="parent">Parent</option><option value="coach">Coach</option><option value="admin">Admin</option></select>
+</div></header>
+
+<main class="main">
+<section id="home" class="screen active"></section>
+<section id="attendance" class="screen"></section>
+<section id="calendar" class="screen"></section>
+<section id="manage" class="screen"></section>
+<section id="team" class="screen"></section>
+</main>
+
+<nav class="nav"><div class="navin">
+<button onclick="go('home')" id="n-home"><span>⌂</span><i data-k="home">Início</i></button>
+<button onclick="go('attendance')" id="n-att"><span>✓</span><i data-k="attendance">Presenças</i></button>
+<button onclick="go('calendar')" id="n-cal"><span>▣</span><i data-k="calendar">Calendário</i></button>
+<button onclick="go('manage')" id="n-man"><span>⚙</span><i data-k="manage">Gestão</i></button>
+<button onclick="go('team')" id="n-team" style="display:none"><span>⚽</span><i data-k="team">Equipa</i></button>
+</div></nav>
+</div>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+const T = {
+  pt: {
+    home:"Início", attendance:"Presenças", calendar:"Calendário", manage:"Gestão",
+    welcome:"Bem-vindo ao ClubGest", club:"FCD03 Differdange", next:"Próximos eventos",
+    training:"Treino", match:"Jogo", present:"Presente", absent:"Ausente", save:"Guardar",
+    cancel:"Cancelar", players:"Jogadores", team:"Equipa U9", news:"Notícias",
+    edit:"Editar", add:"Adicionar", admin:"Administração", coach:"Treinador", parent:"Encarregado",
+    onlychild:"Só podes confirmar a presença do teu filho.", mychild:"O meu filho",
+    attendanceSaved:"Presença guardada.", newplayer:"Novo jogador", name:"Nome",
+    number:"Número", position:"Posição", create:"Criar", created:"Criado com sucesso.",
+    trainingAt:"Hoje · 18:30", matchAt:"Sábado · 10:00", opponent:"Racing FC",
+    field:"Campo Municipal 2",
+    selectTeam:"Escolher equipa", teams:"Equipas", teamPlayers:"Jogadores da equipa",
+    addTeam:"Adicionar equipa", newTeam:"Nova equipa", teamName:"Nome da equipa",
+    teamCreated:"Equipa criada com sucesso.", noPlayers:"Ainda não existem jogadores nesta equipa.",
+    invalidTeam:"Escolhe um nome de equipa válido.", teamExists:"Essa equipa já existe.",
+    deleteTeam:"Apagar equipa", teamDeleted:"Equipa apagada.", confirmDelete:"Tens a certeza que queres apagar esta equipa?", photo:"Foto", birthDate:"Data de nascimento", guardian:"Pai / Mãe / Encarregado", phone:"Telefone", email:"Email", active:"Ativo", inactive:"Inativo", details:"Ficha do jogador", status:"Estado", noPhoto:"Sem foto", selectStatus:"Selecionar estado", duplicateNumber:"Este número já está atribuído nesta equipa.", playerSaved:"Ficha do jogador guardada.",
+    saved:"Guardado.", noTeams:"Não existem equipas.", teamInfo:"Informação da equipa", teamCoach:"Treinador", teamAssistant:"Adjunto", teamSeason:"Época", teamNotes:"Notas da equipa", teamSave:"Guardar equipa", teamSaved:"Equipa guardada.", teamMembers:"Jogadores", teamEvents:"Próximos eventos", viewTeam:"Ver equipa", editTeam:"Editar equipa", addCoach:"Adicionar treinador", coachName:"Nome do treinador", assistantName:"Nome do adjunto", season:"Época", notes:"Notas", noCoach:"Sem treinador definido", noEvents:"Sem eventos definidos", newEvent:"Novo evento", eventType:"Tipo", eventDate:"Data", eventTime:"Hora", eventLocation:"Local", eventOpponent:"Adversário", eventCreated:"Evento criado.", trainingType:"Treino", matchType:"Jogo", eventName:"Nome do evento", deleteEvent:"Apagar evento", confirmEventDelete:"Apagar este evento?", teamOverview:"Resumo da equipa", attendanceRate:"Presença", back:"Voltar", close:"Fechar", team:"Equipa",overview:"Resumo",teamPlayersTab:"Jogadores",trainings:"Treinos",games:"Jogos",attendanceTab:"Presenças",openTeam:"Abrir equipa",teamPage:"Página da equipa",noAssistant:"Sem adjunto definido",noNotes:"Sem notas",teamDetails:"Detalhes da equipa"
+  },
+  fr: {
+    home:"Accueil", attendance:"Présences", calendar:"Calendrier", manage:"Gestion",
+    welcome:"Bienvenue sur ClubGest", club:"FCD03 Differdange", next:"Prochains événements",
+    training:"Entraînement", match:"Match", present:"Présent", absent:"Absent", save:"Enregistrer",
+    cancel:"Annuler", players:"Joueurs", team:"Équipe U9", news:"Actualités",
+    edit:"Modifier", add:"Ajouter", admin:"Administration", coach:"Entraîneur", parent:"Parent",
+    onlychild:"Vous pouvez confirmer uniquement la présence de votre enfant.", mychild:"Mon enfant",
+    attendanceSaved:"Présence enregistrée.", newplayer:"Nouveau joueur", name:"Nom",
+    number:"Numéro", position:"Poste", create:"Créer", created:"Créé avec succès.",
+    trainingAt:"Aujourd'hui · 18:30", matchAt:"Samedi · 10:00", opponent:"Racing FC",
+    field:"Campo Municipal 2",
+    selectTeam:"Choisir l'équipe", teams:"Équipes", teamPlayers:"Joueurs de l'équipe",
+    addTeam:"Ajouter une équipe", newTeam:"Nouvelle équipe", teamName:"Nom de l'équipe",
+    teamCreated:"Équipe créée avec succès.", noPlayers:"Aucun joueur dans cette équipe.",
+    invalidTeam:"Choisissez un nom d'équipe valide.", teamExists:"Cette équipe existe déjà.",
+    deleteTeam:"Supprimer l'équipe", teamDeleted:"Équipe supprimée.", confirmDelete:"Voulez-vous vraiment supprimer cette équipe ?", photo:"Photo", birthDate:"Date de naissance", guardian:"Parent / tuteur", phone:"Téléphone", email:"Email", active:"Actif", inactive:"Inactif", details:"Fiche du joueur", status:"Statut", noPhoto:"Sans photo", selectStatus:"Choisir le statut", duplicateNumber:"Ce numéro est déjà attribué dans cette équipe.", playerSaved:"Fiche du joueur enregistrée.",
+    saved:"Enregistré.", noTeams:"Aucune équipe.", teamInfo:"Informations de l'équipe", teamCoach:"Entraîneur", teamAssistant:"Adjoint", teamSeason:"Saison", teamNotes:"Notes de l'équipe", teamSave:"Enregistrer l'équipe", teamSaved:"Équipe enregistrée.", teamMembers:"Joueurs", teamEvents:"Prochains événements", viewTeam:"Voir l'équipe", editTeam:"Modifier l'équipe", addCoach:"Ajouter un entraîneur", coachName:"Nom de l'entraîneur", assistantName:"Nom de l'adjoint", season:"Saison", notes:"Notes", noCoach:"Aucun entraîneur défini", noEvents:"Aucun événement défini", newEvent:"Nouvel événement", eventType:"Type", eventDate:"Date", eventTime:"Heure", eventLocation:"Lieu", eventOpponent:"Adversaire", eventCreated:"Événement créé.", trainingType:"Entraînement", matchType:"Match", eventName:"Nom de l'événement", deleteEvent:"Supprimer l'événement", confirmEventDelete:"Supprimer cet événement?", teamOverview:"Résumé de l'équipe", attendanceRate:"Présence", back:"Retour", close:"Fermer", team:"Équipe",overview:"Résumé",teamPlayersTab:"Joueurs",trainings:"Entraînements",games:"Matchs",attendanceTab:"Présences",openTeam:"Ouvrir l'équipe",teamPage:"Page de l'équipe",noAssistant:"Aucun adjoint défini",noNotes:"Aucune note",teamDetails:"Détails de l'équipe"
+  },
+  en: {
+    home:"Home", attendance:"Attendance", calendar:"Calendar", manage:"Management",
+    welcome:"Welcome to ClubGest", club:"FCD03 Differdange", next:"Upcoming events",
+    training:"Training", match:"Match", present:"Present", absent:"Absent", save:"Save",
+    cancel:"Cancel", players:"Players", team:"U9 Team", news:"News",
+    edit:"Edit", add:"Add", admin:"Administration", coach:"Coach", parent:"Parent",
+    onlychild:"You can only confirm attendance for your own child.", mychild:"My child",
+    attendanceSaved:"Attendance saved.", newplayer:"New player", name:"Name",
+    number:"Number", position:"Position", create:"Create", created:"Created successfully.",
+    trainingAt:"Today · 18:30", matchAt:"Saturday · 10:00", opponent:"Racing FC",
+    field:"Campo Municipal 2",
+    selectTeam:"Choose team", teams:"Teams", teamPlayers:"Team players",
+    addTeam:"Add team", newTeam:"New team", teamName:"Team name",
+    teamCreated:"Team created successfully.", noPlayers:"No players in this team yet.",
+    invalidTeam:"Choose a valid team name.", teamExists:"That team already exists.",
+    deleteTeam:"Delete team", teamDeleted:"Team deleted.", confirmDelete:"Are you sure you want to delete this team?", photo:"Photo", birthDate:"Date of birth", guardian:"Parent / guardian", phone:"Phone", email:"Email", active:"Active", inactive:"Inactive", details:"Player profile", status:"Status", noPhoto:"No photo", selectStatus:"Select status", duplicateNumber:"This number is already assigned in this team.", playerSaved:"Player profile saved.",
+    saved:"Saved.", noTeams:"No teams.", teamInfo:"Team information", teamCoach:"Coach", teamAssistant:"Assistant", teamSeason:"Season", teamNotes:"Team notes", teamSave:"Save team", teamSaved:"Team saved.", teamMembers:"Players", teamEvents:"Upcoming events", viewTeam:"View team", editTeam:"Edit team", addCoach:"Add coach", coachName:"Coach name", assistantName:"Assistant name", season:"Season", notes:"Notes", noCoach:"No coach defined", noEvents:"No events defined", newEvent:"New event", eventType:"Type", eventDate:"Date", eventTime:"Time", eventLocation:"Location", eventOpponent:"Opponent", eventCreated:"Event created.", trainingType:"Training", matchType:"Match", eventName:"Event name", deleteEvent:"Delete event", confirmEventDelete:"Delete this event?", teamOverview:"Team overview", attendanceRate:"Attendance", back:"Back", close:"Close", team:"Team",overview:"Overview",teamPlayersTab:"Players",trainings:"Trainings",games:"Games",attendanceTab:"Attendance",openTeam:"Open team",teamPage:"Team page",noAssistant:"No assistant defined",noNotes:"No notes",teamDetails:"Team details"
+  }
+};
+
+const DEFAULT_TEAMS = {
+  U7:  ["Arthur Silva","Leo Martins","Noah Costa","Tiago Santos"],
+  U9:  ["Lucas Ferreira","Tomás Martins","Enzo Costa","Gabriel Santos","Noah Rodrigues","Dinis Silva"],
+  U11: ["Mateus Pereira","Rafael Gomes","Diogo Alves","Afonso Silva"],
+  U13: ["João Santos","Miguel Costa","Gonçalo Martins","Duarte Ferreira"]
+};
+
+const $ = id => document.getElementById(id);
+const storage = {
+  get(key, fallback) {
+    try { return localStorage.getItem(key) ?? fallback; } catch (_) { return fallback; }
+  },
+  set(key, value) {
+    try { localStorage.setItem(key, value); return true; } catch (_) { return false; }
+  }
+};
+
+let lang = ["pt","fr","en"].includes(storage.get("cgLang","pt")) ? storage.get("cgLang","pt") : "pt";
+let role = ["parent","coach","admin"].includes(storage.get("cgRole","parent")) ? storage.get("cgRole","parent") : "parent";
+
+function normalizePlayer(player, index) {
+  if (typeof player === "string") {
+    return {
+      name: player.trim(), number: index + 1, position: "",
+      photo:"", birthDate:"", guardian:"", phone:"", email:""
+    };
+  }
+  if (!player || typeof player !== "object") return null;
+  return {
+    name: String(player.name || "").trim(),
+    number: Number.isFinite(Number(player.number)) ? Number(player.number) : index + 1,
+    position: String(player.position || "").trim(),
+    photo: String(player.photo || ""),
+    birthDate: String(player.birthDate || ""),
+    guardian: String(player.guardian || ""),
+    phone: String(player.phone || ""),
+    email: String(player.email || "")
+  };
+}
+
+function normalizeTeam(teamName, value) {
+  const name = String(teamName || "").trim().toUpperCase();
+  if (!name) return null;
+  if (Array.isArray(value)) {
+    return { name, coach:"", assistant:"", season:"2026/2027", notes:"", players:value.map(normalizePlayer).filter(Boolean), events:[] };
+  }
+  if (!value || typeof value !== "object") return null;
+  const rawPlayers = Array.isArray(value.players) ? value.players : [];
+  const rawEvents = Array.isArray(value.events) ? value.events : [];
+  return {
+    name,
+    coach:String(value.coach || "").trim(),
+    assistant:String(value.assistant || "").trim(),
+    season:String(value.season || "2026/2027").trim(),
+    notes:String(value.notes || "").trim(),
+    players:rawPlayers.map(normalizePlayer).filter(p => p && p.name),
+    events:rawEvents.map((event, i) => ({
+      id:String(event.id || `${name}-${i}-${Date.now()}`),
+      type:event.type === "match" ? "match" : "training",
+      name:String(event.name || "").trim(),
+      date:String(event.date || ""),
+      time:String(event.time || ""),
+      location:String(event.location || "").trim(),
+      opponent:String(event.opponent || "").trim()
+    }))
+  };
+}
+
+function normalizeTeams(raw) {
+  const result = {};
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return result;
+  Object.entries(raw).forEach(([teamName, value]) => {
+    const team = normalizeTeam(teamName, value);
+    if (team) result[team.name] = team;
+  });
+  return result;
+}
+
+function loadTeams() {
+  const saved = storage.get("cgTeams", "");
+  if (saved) {
+    try {
+      const parsed = normalizeTeams(JSON.parse(saved));
+      if (Object.keys(parsed).length) return parsed;
+    } catch (_) {}
+  }
+
+  const legacy = storage.get("cgPlayers", "");
+  const raw = structuredClone(DEFAULT_TEAMS);
+  if (legacy) {
+    try {
+      const oldPlayers = JSON.parse(legacy);
+      if (Array.isArray(oldPlayers) && oldPlayers.length) raw.U9 = oldPlayers;
+    } catch (_) {}
+  }
+  return normalizeTeams(raw);
+}
+let teams = loadTeams();
+let selectedTeam = storage.get("cgSelectedTeam","U9").toUpperCase();
+if (!teams[selectedTeam]) selectedTeam = Object.keys(teams)[0] || "U9";
+let players = teams[selectedTeam]?.players || [];
+
+function currentTeam() {
+  return teams[selectedTeam] || {name:selectedTeam,coach:"",assistant:"",season:"2026/2027",notes:"",players:[],events:[]};
+}
+
+function syncCurrentTeam() {
+  if (!teams[selectedTeam]) return;
+  teams[selectedTeam].players = players;
+}
+
+function t(key) {
+  return T[lang]?.[key] ?? T.pt[key] ?? key;
+}
+
+function persistTeams() {
+  syncCurrentTeam();
+  storage.set("cgTeams", JSON.stringify(teams));
+  storage.set("cgSelectedTeam", selectedTeam);
+}
+
+function selectTeam(value) {
+  persistTeams();
+  const next = String(value || "").toUpperCase();
+  if (!teams[next]) return;
+  selectedTeam = next;
+  players = teams[selectedTeam]?.players || [];
+  storage.set("cgSelectedTeam", selectedTeam);
+  render();
+}
+
+function setLang(value) {
+  lang = ["pt","fr","en"].includes(value) ? value : "pt";
+  storage.set("cgLang", lang);
+  render();
+}
+
+function setRole(value) {
+  role = ["parent","coach","admin"].includes(value) ? value : "parent";
+  storage.set("cgRole", role);
+  render();
+}
+
+function currentTeamLabel() {
+  return selectedTeam || "U9";
+}
+
+function initials(name) {
+  const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+  return parts.slice(0,2).map(x => x[0].toUpperCase()).join("") || "??";
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[ch]));
+}
+
+function attendanceKey(team, name) {
+  return `cg_att_${team}_${name}`;
+}
+
+function isPresent(team, name) {
+  return storage.get(attendanceKey(team, name), "false") === "true";
+}
+
+function go(id) {
+  const screen = $(id);
+  if (!screen) return;
+  document.querySelectorAll(".screen").forEach(x => x.classList.remove("active"));
+  screen.classList.add("active");
+  document.querySelectorAll(".nav button").forEach(x => x.classList.remove("active"));
+  const navId = {attendance:"att", calendar:"cal", manage:"man", team:"team", home:"home"}[id];
+  if (navId && $(`n-${navId}`)) $(`n-${navId}`).classList.add("active");
+  render();
+}
+
+function render() {
+  $("lang").value = lang;
+  $("role").value = role;
+  $("n-att").style.display = "block";
+  $("n-man").style.display = role === "admin" ? "block" : "none";
+  home();
+  attendance();
+  calendar();
+  manage();
+  teamPage();
+  $("n-team").style.display = role === "admin" ? "block" : "none";
+  document.querySelectorAll("[data-k]").forEach(x => x.textContent = t(x.dataset.k));
+}
+
+function home() {
+  const roleName = t(role);
+  const teamForView = role === "parent" ? "U9" : currentTeamLabel();
+  $("home").innerHTML = `
+    <div class="hero">
+      <div>
+        <span class="pill">${escapeHTML(roleName)}</span>
+        <h1>${escapeHTML(t("welcome"))}</h1>
+        <div class="muted">${escapeHTML(t("club"))} · ${escapeHTML(teamForView)}</div>
+      </div>
+      <div class="crest">⚽</div>
+    </div>
+    <div class="grid">
+      <div class="card stat"><span class="muted">${escapeHTML(t("players"))}</span><b>${role==="parent" ? "1" : players.length}</b></div>
+      <div class="card stat"><span class="muted">${escapeHTML(t("training"))}</span><b>18:30</b></div>
+      <div class="card stat"><span class="muted">${escapeHTML(t("match"))}</span><b>10:00</b></div>
+      <div class="card stat"><span class="muted">${escapeHTML(t("news"))}</span><b>1</b></div>
+    </div>
+    <div class="section">
+      <div class="sectionhead"><h2>${escapeHTML(t("next"))}</h2></div>
+      <div class="list">
+        <div class="row"><div class="left"><div class="avatar">⚽</div><div><b>${escapeHTML(t("training"))}</b><div class="muted">${escapeHTML(t("trainingAt"))} · ${escapeHTML(t("field"))}</div></div></div><span class="pill">${escapeHTML(teamForView)}</span></div>
+        <div class="row"><div class="left"><div class="avatar">VS</div><div><b>${escapeHTML(t("match"))} · ${escapeHTML(t("opponent"))}</b><div class="muted">${escapeHTML(t("matchAt"))} · ${escapeHTML(t("field"))}</div></div></div><span class="pill">${escapeHTML(teamForView)}</span></div>
+      </div>
+    </div>
+    <div class="section"><div class="actions">
+      <button class="btn red" onclick="go('attendance')">${escapeHTML(t("attendance"))}</button>
+      ${role==="admin" ? `<button class="btn" onclick="go('manage')">${escapeHTML(t("admin"))}</button>` : ""}
+    </div></div>`;
+}
+
+function attendance() {
+  if (role === "parent") {
+    const present = isPresent("U9", "Lucas Ferreira");
+    $("attendance").innerHTML = `
+      <div class="sectionhead"><h2>${escapeHTML(t("attendance"))}</h2></div>
+      <div class="card">
+        <span class="pill">${escapeHTML(t("mychild"))}</span>
+        <h2>Lucas Ferreira</h2>
+        <p class="muted">${escapeHTML(t("onlychild"))}</p>
+        <div class="actions">
+          <button class="btn red" onclick="saveAttendance('Lucas Ferreira',true)">${escapeHTML(t("present"))}${present ? " ✓" : ""}</button>
+          <button class="btn light" onclick="saveAttendance('Lucas Ferreira',false)">${escapeHTML(t("absent"))}${!present ? " ✓" : ""}</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  const team = currentTeamLabel();
+  $("attendance").innerHTML = `
+    <div class="sectionhead"><h2>${escapeHTML(t("attendance"))}</h2><span class="pill">${escapeHTML(team)}</span></div>
+    <div class="card">
+      <p class="muted">${escapeHTML(role === "coach" ? t("coach") : t("admin"))} · ${escapeHTML(team)}</p>
+      <div class="list">
+        ${players.length ? players.map((p,i) => `
+          <label class="check">
+            <input type="checkbox" id="p${i}" ${isPresent(team,p.name) ? "checked" : ""}>
+            <span><b>${escapeHTML(p.name)}</b><small class="muted"> · #${escapeHTML(p.number)}${p.position ? " · "+escapeHTML(p.position) : ""}</small></span>
+          </label>`).join("") : `<p class="muted">${escapeHTML(t("noPlayers"))}</p>`}
+      </div>
+      ${players.length ? `<br><button class="btn red" onclick="saveTeamAttendance()">${escapeHTML(t("save"))}</button>` : ""}
+    </div>`;
+}
+
+function saveAttendance(name, value) {
+  storage.set(attendanceKey("U9", name), String(Boolean(value)));
+  toast(t("attendanceSaved"));
+  attendance();
+}
+
+function saveTeamAttendance() {
+  players.forEach((p,i) => {
+    const checkbox = $(`p${i}`);
+    if (checkbox) storage.set(attendanceKey(currentTeamLabel(), p.name), String(checkbox.checked));
+  });
+  toast(t("attendanceSaved"));
+}
+
+function calendar() {
+  const team = role === "parent" ? "U9" : currentTeamLabel();
+  $("calendar").innerHTML = `
+    <div class="sectionhead"><h2>${escapeHTML(t("calendar"))}</h2><span class="pill">${escapeHTML(team)}</span></div>
+    <div class="list">
+      <div class="row"><div><b>${escapeHTML(t("training"))}</b><div class="muted">${escapeHTML(t("trainingAt"))} · ${escapeHTML(t("field"))}</div></div><span class="pill">${escapeHTML(team)}</span></div>
+      <div class="row"><div><b>${escapeHTML(t("match"))} · ${escapeHTML(t("opponent"))}</b><div class="muted">${escapeHTML(t("matchAt"))} · ${escapeHTML(t("field"))}</div></div><span class="pill">${escapeHTML(team)}</span></div>
+    </div>`;
+}
+
+function manage() {
+  if (role !== "admin") {
+    $("manage").innerHTML = "";
+    return;
+  }
+
+  const teamNames = Object.keys(teams);
+  if (!teamNames.length) {
+    $("manage").innerHTML = `<div class="card"><p>${escapeHTML(t("noTeams"))}</p><button class="btn red" onclick="newTeam()">${escapeHTML(t("addTeam"))}</button></div>`;
+    return;
+  }
+
+  const team = currentTeam();
+  const teamOptions = teamNames.map(name =>
+    `<option value="${escapeHTML(name)}" ${name===selectedTeam ? "selected" : ""}>${escapeHTML(name)}</option>`
+  ).join("");
+
+  $("manage").innerHTML = `
+    <div class="sectionhead"><h2>${escapeHTML(t("admin"))}</h2><span class="pill">${escapeHTML(selectedTeam)}</span></div>
+
+    <div class="card teamselect">
+      <div><span class="muted">${escapeHTML(t("selectTeam"))}</span><h2 style="margin-top:5px">${escapeHTML(t("teamOverview"))} · ${escapeHTML(selectedTeam)}</h2></div>
+      <div class="actions">
+        <select class="lang" style="min-width:180px" aria-label="${escapeHTML(t("selectTeam"))}" onchange="selectTeam(this.value)">${teamOptions}</select>
+        <button class="btn red" onclick="newTeam()">${escapeHTML(t("addTeam"))}</button>
+        <button class="btn" onclick="go('team')">${escapeHTML(t("openTeam"))}</button>
+        <button class="btn light" onclick="editTeamInfo()">${escapeHTML(t("editTeam"))}</button>
+        ${teamNames.length > 1 ? `<button class="btn light" onclick="deleteCurrentTeam()">${escapeHTML(t("deleteTeam"))}</button>` : ""}
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card stat"><span class="muted">${escapeHTML(t("players"))}</span><b>${players.length}</b><div class="muted">${escapeHTML(selectedTeam)}</div></div>
+      <div class="card"><span class="muted">${escapeHTML(t("teamCoach"))}</span><b style="font-size:18px">${escapeHTML(team.coach || t("noCoach"))}</b></div>
+      <div class="card"><span class="muted">${escapeHTML(t("teamSeason"))}</span><b style="font-size:18px">${escapeHTML(team.season)}</b></div>
+      <div class="card"><span class="muted">${escapeHTML(t("teamEvents"))}</span><b style="font-size:25px">${team.events.length}</b></div>
+    </div>
+
+    <div class="section">
+      <div class="sectionhead"><h2>${escapeHTML(t("teamInfo"))}</h2><button class="btn light" onclick="editTeamInfo()">${escapeHTML(t("editTeam"))}</button></div>
+      <div class="card">
+        <div class="profilegrid">
+          <div><span class="muted">${escapeHTML(t("teamCoach"))}</span><div><b>${escapeHTML(team.coach || t("noCoach"))}</b></div></div>
+          <div><span class="muted">${escapeHTML(t("teamAssistant"))}</span><div><b>${escapeHTML(team.assistant || "—")}</b></div></div>
+          <div><span class="muted">${escapeHTML(t("teamSeason"))}</span><div><b>${escapeHTML(team.season)}</b></div></div>
+          <div><span class="muted">${escapeHTML(t("teamNotes"))}</span><div><b>${escapeHTML(team.notes || "—")}</b></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sectionhead"><h2>${escapeHTML(t("players"))} · ${escapeHTML(selectedTeam)}</h2><button class="btn red" onclick="newPlayer()">${escapeHTML(t("add"))}</button></div>
+      <div class="list">
+        ${players.length ? players.map((p,i) => `
+          <div class="row">
+            <div class="left">
+              ${p.photo ? `<img class="playerphoto" src="${escapeHTML(p.photo)}" alt="${escapeHTML(p.name)}">` : `<div class="avatar">${escapeHTML(initials(p.name))}</div>`}
+              <div>
+                <b>${escapeHTML(p.name)}</b>
+                <div class="muted">${escapeHTML(selectedTeam)} · #${escapeHTML(p.number)}${p.position ? " · "+escapeHTML(p.position) : ""}</div>
+                ${p.guardian ? `<div class="muted">${escapeHTML(p.guardian)}</div>` : ""}
+                ${p.phone ? `<div class="muted">${escapeHTML(p.phone)}</div>` : ""}
+              </div>
+            </div>
+            <button class="btn light" onclick="editPlayer(${i})">${escapeHTML(t("edit"))}</button>
+          </div>`).join("") : `<div class="card"><p class="muted">${escapeHTML(t("noPlayers"))}</p></div>`}
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="sectionhead"><h2>${escapeHTML(t("teamEvents"))}</h2><button class="btn red" onclick="newEvent()">${escapeHTML(t("newEvent"))}</button></div>
+      <div class="list">
+        ${team.events.length ? team.events.slice().sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`)).map((e,i) => `
+          <div class="row">
+            <div>
+              <b>${escapeHTML(e.name || (e.type==="match" ? t("matchType") : t("trainingType")))}</b>
+              <div class="muted">${escapeHTML(e.date || "—")} ${escapeHTML(e.time || "")} · ${escapeHTML(e.location || "—")}${e.opponent ? " · "+escapeHTML(e.opponent) : ""}</div>
+            </div>
+            <button class="btn light" onclick="deleteEvent('${escapeHTML(e.id)}')">${escapeHTML(t("deleteEvent"))}</button>
+          </div>`).join("") : `<div class="card"><p class="muted">${escapeHTML(t("noEvents"))}</p></div>`}
+      </div>
+    </div>
+  `;
+}
+let teamTab = "overview";
+
+function showTeamTab(tab) {
+  teamTab = ["overview","players","trainings","games","attendance"].includes(tab) ? tab : "overview";
+  teamPage();
+}
+
+function teamEventList(type) {
+  const events = currentTeam().events.filter(e => e.type === type);
+  if (!events.length) return `<div class="card"><p class="muted">${escapeHTML(t("noEvents"))}</p></div>`;
+  return `<div class="list">${events.slice().sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`)).map(e => `
+    <div class="row"><div><b>${escapeHTML(e.name || (type==="match" ? t("matchType") : t("trainingType")))}</b>
+    <div class="muted">${escapeHTML(e.date || "—")} ${escapeHTML(e.time || "")} · ${escapeHTML(e.location || "—")}${e.opponent ? " · "+escapeHTML(e.opponent) : ""}</div></div>
+    <button class="btn light" onclick="deleteEvent('${escapeHTML(e.id)}')">${escapeHTML(t("deleteEvent"))}</button></div>`).join("")}</div>`;
+}
+
+function teamPage() {
+  if (role !== "admin") { $("team").innerHTML = ""; return; }
+  const team = currentTeam();
+  const presentCount = players.filter(p => isPresent(selectedTeam, p.name)).length;
+  const attendancePercent = players.length ? Math.round((presentCount / players.length) * 100) : 0;
+
+  $("team").innerHTML = `
+    <div class="teamhero"><div class="actions" style="justify-content:space-between">
+      <div><span class="pill">${escapeHTML(selectedTeam)}</span><h1 style="margin:8px 0 4px">${escapeHTML(t("teamPage"))}</h1>
+      <div class="muted">${escapeHTML(team.season)} · ${escapeHTML(t("teamCoach"))}: ${escapeHTML(team.coach || t("noCoach"))}</div></div>
+      <button class="btn light" onclick="go('manage')">${escapeHTML(t("back"))}</button>
+    </div></div>
+
+    <div class="tabs" role="tablist">
+      <button class="${teamTab==="overview"?"active":""}" onclick="showTeamTab('overview')">${escapeHTML(t("overview"))}</button>
+      <button class="${teamTab==="players"?"active":""}" onclick="showTeamTab('players')">${escapeHTML(t("teamPlayersTab"))}</button>
+      <button class="${teamTab==="trainings"?"active":""}" onclick="showTeamTab('trainings')">${escapeHTML(t("trainings"))}</button>
+      <button class="${teamTab==="games"?"active":""}" onclick="showTeamTab('games')">${escapeHTML(t("games"))}</button>
+      <button class="${teamTab==="attendance"?"active":""}" onclick="showTeamTab('attendance')">${escapeHTML(t("attendanceTab"))}</button>
+    </div>
+
+    <div class="tabpane ${teamTab==="overview"?"active":""}">
+      <div class="teammeta">
+        <div class="card"><span class="muted">${escapeHTML(t("teamCoach"))}</span><b>${escapeHTML(team.coach || t("noCoach"))}</b></div>
+        <div class="card"><span class="muted">${escapeHTML(t("teamAssistant"))}</span><b>${escapeHTML(team.assistant || t("noAssistant"))}</b></div>
+        <div class="card"><span class="muted">${escapeHTML(t("players"))}</span><b>${players.length}</b></div>
+      </div>
+      <div class="section"><div class="sectionhead"><h2>${escapeHTML(t("teamDetails"))}</h2><button class="btn light" onclick="editTeamInfo()">${escapeHTML(t("editTeam"))}</button></div>
+        <div class="card"><span class="muted">${escapeHTML(t("teamNotes"))}</span><p>${escapeHTML(team.notes || t("noNotes"))}</p></div>
+      </div>
+      <div class="section"><div class="sectionhead"><h2>${escapeHTML(t("teamEvents"))}</h2><button class="btn red" onclick="newEvent()">${escapeHTML(t("newEvent"))}</button></div>
+        <div class="list">${team.events.slice().sort((a,b)=>`${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`)).slice(0,5).map(e=>`
+          <div class="row"><div><b>${escapeHTML(e.name || (e.type==="match" ? t("matchType") : t("trainingType")))}</b><div class="muted">${escapeHTML(e.date||"—")} ${escapeHTML(e.time||"")} · ${escapeHTML(e.location||"—")}</div></div><span class="pill">${escapeHTML(e.type==="match"?t("matchType"):t("trainingType"))}</span></div>`).join("") || `<div class="card"><p class="muted">${escapeHTML(t("noEvents"))}</p></div>`}</div>
+      </div>
+    </div>
+
+    <div class="tabpane ${teamTab==="players"?"active":""}">
+      <div class="sectionhead"><h2>${escapeHTML(t("teamPlayersTab"))} · ${escapeHTML(selectedTeam)}</h2><button class="btn red" onclick="newPlayer()">${escapeHTML(t("add"))}</button></div>
+      <div class="list">${players.map((p,i)=>`
+        <div class="row"><div class="left">${p.photo ? `<img class="playerphoto" src="${escapeHTML(p.photo)}" alt="${escapeHTML(p.name)}">` : `<div class="avatar">${escapeHTML(initials(p.name))}</div>`}<div><b>${escapeHTML(p.name)}</b><div class="muted">#${escapeHTML(p.number)}${p.position ? " · "+escapeHTML(p.position) : ""}</div>${p.guardian?`<div class="muted">${escapeHTML(p.guardian)}</div>`:""}</div></div><button class="btn light" onclick="editPlayer(${i})">${escapeHTML(t("edit"))}</button></div>
+      `).join("") || `<div class="card"><p class="muted">${escapeHTML(t("noPlayers"))}</p></div>`}</div>
+    </div>
+
+    <div class="tabpane ${teamTab==="trainings"?"active":""}">
+      <div class="sectionhead"><h2>${escapeHTML(t("trainings"))}</h2><button class="btn red" onclick="newEventWithType('training')">${escapeHTML(t("newEvent"))}</button></div>
+      ${teamEventList("training")}
+    </div>
+
+    <div class="tabpane ${teamTab==="games"?"active":""}">
+      <div class="sectionhead"><h2>${escapeHTML(t("games"))}</h2><button class="btn red" onclick="newEventWithType('match')">${escapeHTML(t("newEvent"))}</button></div>
+      ${teamEventList("match")}
+    </div>
+
+    <div class="tabpane ${teamTab==="attendance"?"active":""}">
+      <div class="sectionhead"><h2>${escapeHTML(t("attendanceTab"))}</h2><span class="pill">${attendancePercent}%</span></div>
+      <div class="card"><div class="grid" style="margin-top:0"><div class="stat"><span class="muted">${escapeHTML(t("present"))}</span><b>${presentCount}</b></div><div class="stat"><span class="muted">${escapeHTML(t("players"))}</span><b>${players.length}</b></div></div></div>
+      <div class="list" style="margin-top:12px">${players.map((p,i)=>`
+        <label class="check"><input type="checkbox" id="tp${i}" ${isPresent(selectedTeam,p.name)?"checked":""} onchange="setPlayerAttendance(${i},this.checked)"><span><b>${escapeHTML(p.name)}</b><small class="muted"> · #${escapeHTML(p.number)}</small></span></label>`).join("") || `<div class="card"><p class="muted">${escapeHTML(t("noPlayers"))}</p></div>`}</div>
+    </div>`;
+}
+
+function setPlayerAttendance(index, value) {
+  const player = players[index];
+  if (!player) return;
+  storage.set(attendanceKey(selectedTeam, player.name), String(Boolean(value)));
+  teamPage();
+}
+
+function newEventWithType(type) {
+  newEvent();
+  const select = $("etype");
+  if (select) select.value = type;
+}
+
+function newTeam() {
+  $("sheet").innerHTML = `
+    <h2>${escapeHTML(t("newTeam"))}</h2>
+    <div class="form">
+      <label>${escapeHTML(t("teamName"))}<input id="tn" maxlength="20" autocomplete="off" placeholder="Ex.: U15"></label>
+      <div class="actions">
+        <button class="btn light" onclick="closeModal()">${escapeHTML(t("cancel"))}</button>
+        <button class="btn red" onclick="saveTeam()">${escapeHTML(t("save"))}</button>
+      </div>
+    </div>`;
+  $("modal").classList.add("show");
+  $("tn")?.focus();
+}
+
+function saveTeam() {
+  const input = $("tn");
+  const name = String(input?.value || "").trim().toUpperCase();
+  if (!/^[A-Z0-9À-ÖØ-ÝÆŒŠŽ _-]{2,20}$/i.test(name)) {
+    toast(t("invalidTeam")); return;
+  }
+  if (teams[name]) {
+    toast(t("teamExists")); return;
+  }
+  teams[name] = [];
+  selectedTeam = name;
+  players = teams[name];
+  persistTeams();
+  closeModal();
+  render();
+  toast(t("teamCreated"));
+}
+
+function deleteCurrentTeam() {
+  const team = selectedTeam;
+  if (Object.keys(teams).length <= 1) return;
+  if (!window.confirm(t("confirmDelete"))) return;
+  delete teams[team];
+  selectedTeam = Object.keys(teams)[0];
+  players = teams[selectedTeam]?.players || [];
+  persistTeams();
+  render();
+  toast(t("teamDeleted"));
+}
+
+function editTeamInfo() {
+  const team = currentTeam();
+  $("sheet").innerHTML = `
+    <h2>${escapeHTML(t("editTeam"))} · ${escapeHTML(selectedTeam)}</h2>
+    <div class="form">
+      <label>${escapeHTML(t("teamCoach"))}<input id="tcoach" maxlength="100" value="${escapeHTML(team.coach)}"></label>
+      <label>${escapeHTML(t("teamAssistant"))}<input id="tassistant" maxlength="100" value="${escapeHTML(team.assistant)}"></label>
+      <label>${escapeHTML(t("teamSeason"))}<input id="tseason" maxlength="30" value="${escapeHTML(team.season)}"></label>
+      <label>${escapeHTML(t("teamNotes"))}<textarea id="tnotes" maxlength="500" rows="4">${escapeHTML(team.notes)}</textarea></label>
+      <div class="actions">
+        <button class="btn light" onclick="closeModal()">${escapeHTML(t("cancel"))}</button>
+        <button class="btn red" onclick="saveTeamInfo()">${escapeHTML(t("teamSave"))}</button>
+      </div>
+    </div>`;
+  $("modal").classList.add("show");
+  $("tcoach")?.focus();
+}
+
+function saveTeamInfo() {
+  const team = currentTeam();
+  team.coach = String($("tcoach")?.value || "").trim();
+  team.assistant = String($("tassistant")?.value || "").trim();
+  team.season = String($("tseason")?.value || "").trim() || "2026/2027";
+  team.notes = String($("tnotes")?.value || "").trim();
+  persistTeams();
+  closeModal();
+  render();
+  toast(t("teamSaved"));
+}
+
+function newEvent() {
+  $("sheet").innerHTML = `
+    <h2>${escapeHTML(t("newEvent"))} · ${escapeHTML(selectedTeam)}</h2>
+    <div class="form">
+      <label>${escapeHTML(t("eventType"))}
+        <select id="etype"><option value="training">${escapeHTML(t("trainingType"))}</option><option value="match">${escapeHTML(t("matchType"))}</option></select>
+      </label>
+      <label>${escapeHTML(t("eventName"))}<input id="ename" maxlength="100" placeholder="${escapeHTML(t("trainingType"))}"></label>
+      <div class="profilegrid">
+        <label>${escapeHTML(t("eventDate"))}<input id="edate" type="date"></label>
+        <label>${escapeHTML(t("eventTime"))}<input id="etime" type="time"></label>
+      </div>
+      <label>${escapeHTML(t("eventLocation"))}<input id="elocation" maxlength="120"></label>
+      <label>${escapeHTML(t("eventOpponent"))}<input id="eopponent" maxlength="100"></label>
+      <div class="actions">
+        <button class="btn light" onclick="closeModal()">${escapeHTML(t("cancel"))}</button>
+        <button class="btn red" onclick="saveEvent()">${escapeHTML(t("save"))}</button>
+      </div>
+    </div>`;
+  $("modal").classList.add("show");
+  $("edate")?.focus();
+}
+
+function saveEvent() {
+  const team = currentTeam();
+  const type = $("etype")?.value === "match" ? "match" : "training";
+  const event = {
+    id: `${selectedTeam}-${Date.now()}`,
+    type,
+    name:String($("ename")?.value || "").trim() || (type==="match" ? t("matchType") : t("trainingType")),
+    date:String($("edate")?.value || ""),
+    time:String($("etime")?.value || ""),
+    location:String($("elocation")?.value || "").trim(),
+    opponent:String($("eopponent")?.value || "").trim()
+  };
+  team.events.push(event);
+  persistTeams();
+  closeModal();
+  render();
+  toast(t("eventCreated"));
+}
+
+function deleteEvent(id) {
+  if (!window.confirm(t("confirmEventDelete"))) return;
+  const team = currentTeam();
+  team.events = team.events.filter(e => e.id !== id);
+  persistTeams();
+  render();
+}
+function newPlayer() {
+  openForm(-1);
+}
+
+function editPlayer(index) {
+  openForm(index);
+}
+
+function openForm(index) {
+  const p = index >= 0 ? players[index] : {
+    name:"", number:players.length+1, position:"", photo:"", birthDate:"",
+    guardian:"", phone:"", email:""
+  };
+
+  $("sheet").innerHTML = `
+    <h2>${escapeHTML(index >= 0 ? t("details") : t("newplayer"))} · ${escapeHTML(selectedTeam)}</h2>
+    <div class="form">
+      <label>${escapeHTML(t("name"))}<input id="pn" maxlength="80" value="${escapeHTML(p.name)}" autocomplete="name"></label>
+      <div class="profilegrid">
+        <label>${escapeHTML(t("number"))}<input id="pnum" value="${escapeHTML(p.number ?? "")}" type="number" min="0" max="99"></label>
+        <label>${escapeHTML(t("position"))}<input id="ppos" maxlength="40" value="${escapeHTML(p.position || "")}></label>
+      </div>
+      <label>${escapeHTML(t("photo"))}<input id="pphoto" type="url" maxlength="500" value="${escapeHTML(p.photo || "")}" placeholder="https://..." oninput="previewPlayerPhoto()"></label>
+      <div id="photoPreview" class="muted">${p.photo ? `<img class="playerphoto" src="${escapeHTML(p.photo)}" alt="${escapeHTML(p.name)}">` : escapeHTML(t("noPhoto"))}</div>
+      <label>${escapeHTML(t("birthDate"))}<input id="pbirth" type="date" value="${escapeHTML(p.birthDate || "")}"></label>
+      <label>${escapeHTML(t("guardian"))}<input id="pguardian" maxlength="100" value="${escapeHTML(p.guardian || "")}" autocomplete="name"></label>
+      <div class="profilegrid">
+        <label>${escapeHTML(t("phone"))}<input id="pphone" type="tel" maxlength="30" value="${escapeHTML(p.phone || "")}" autocomplete="tel"></label>
+        <label>${escapeHTML(t("email"))}<input id="pemail" type="email" maxlength="120" value="${escapeHTML(p.email || "")}" autocomplete="email"></label>
+      </div>
+      <div class="actions">
+        <button class="btn light" onclick="closeModal()">${escapeHTML(t("cancel"))}</button>
+        <button class="btn red" onclick="savePlayer(${index})">${escapeHTML(t("save"))}</button>
+      </div>
+    </div>`;
+  $("modal").classList.add("show");
+  $("pn")?.focus();
+}
+
+function previewPlayerPhoto() {
+  const value = String($("pphoto")?.value || "").trim();
+  const preview = $("photoPreview");
+  if (!preview) return;
+  preview.innerHTML = value
+    ? `<img class="playerphoto" src="${escapeHTML(value)}" alt="">`
+    : escapeHTML(t("noPhoto"));
+}
+
+function savePlayer(index) {
+  const name = String($("pn")?.value || "").trim();
+  if (!name) return;
+
+  const rawNumber = Number($("pnum")?.value);
+  const number = Number.isFinite(rawNumber) && rawNumber >= 0 && rawNumber <= 99
+    ? rawNumber
+    : (index >= 0 ? players[index].number : players.length + 1);
+
+  const duplicate = players.some((p,i) => i !== index && Number(p.number) === number);
+  if (duplicate) {
+    toast(t("duplicateNumber"));
+    return;
+  }
+
+  const player = {
+    name,
+    number,
+    position: String($("ppos")?.value || "").trim(),
+    photo: String($("pphoto")?.value || "").trim(),
+    birthDate: String($("pbirth")?.value || ""),
+    guardian: String($("pguardian")?.value || "").trim(),
+    phone: String($("pphone")?.value || "").trim(),
+    email: String($("pemail")?.value || "").trim()
+  };
+
+  if (index < 0) players.push(player);
+  else if (players[index]) players[index] = player;
+
+  persistTeams();
+  closeModal();
+  render();
+  toast(t("playerSaved"));
+}
+function closeModal() {
+  $("modal").classList.remove("show");
+}
+
+function toast(message) {
+  const node = $("toast");
+  node.textContent = message;
+  node.classList.add("show");
+  clearTimeout(window.__clubGestToast);
+  window.__clubGestToast = setTimeout(() => node.classList.remove("show"), 1800);
+}
+
+$("modal").addEventListener("click", event => {
+  if (event.target === $("modal")) closeModal();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeModal();
+});
+
+render();
+go("home");
+
+const WEEK_DAYS = [
+  ['1','Seg','Segunda'],['2','Ter','Terça'],['3','Qua','Quarta'],
+  ['4','Qui','Quinta'],['5','Sex','Sexta'],['6','Sáb','Sábado'],['0','Dom','Domingo']
+];
+
+function getWeeklyTrainingConfig(team){
+  team.weeklyTrainings = team.weeklyTrainings || {count:2,days:['2','4'],time:'18:30',location:''};
+  return team.weeklyTrainings;
+}
+
+function updateWeeklyTrainingUI(){
+  const wrap=document.getElementById('weeklyTrainingDays');
+  const count=document.getElementById('weeklyTrainingCount');
+  if(!wrap||!count)return;
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  const cfg=team?getWeeklyTrainingConfig(team):{count:Number(count.value),days:['2','4']};
+  const selected=Array.from(wrap.querySelectorAll('input:checked')).map(x=>x.value);
+  const days=selected.length?selected:cfg.days;
+  wrap.innerHTML=WEEK_DAYS.map(([v,short,long])=>`<label class="day-chip" title="${long}"><input type="checkbox" value="${v}" ${days.includes(v)?'checked':''} onchange="limitTrainingDays()"><b>${short}</b><small>${long}</small></label>`).join('');
+  count.value=String(cfg.count||2);
+  const time=document.getElementById('weeklyTrainingTime'); const loc=document.getElementById('weeklyTrainingLocation');
+  if(time)time.value=cfg.time||'18:30'; if(loc)loc.value=cfg.location||'';
+}
+
+function limitTrainingDays(){
+  const count=Number(document.getElementById('weeklyTrainingCount')?.value||2);
+  const boxes=[...document.querySelectorAll('#weeklyTrainingDays input')];
+  const checked=boxes.filter(x=>x.checked);
+  if(checked.length>count){
+    checked[checked.length-1].checked=false;
+    if(typeof toast==='function')toast(`Escolhe apenas ${count} dias.`);
+  }
+}
+
+function saveWeeklyTrainings(){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(!team)return;
+  const count=Number(document.getElementById('weeklyTrainingCount')?.value||2);
+  const days=[...document.querySelectorAll('#weeklyTrainingDays input:checked')].map(x=>x.value);
+  if(days.length!==count){
+    if(typeof toast==='function')toast(`Escolhe exatamente ${count} dias por semana.`);
+    return;
+  }
+  team.weeklyTrainings={
+    count,days,
+    time:document.getElementById('weeklyTrainingTime')?.value||'18:30',
+    location:document.getElementById('weeklyTrainingLocation')?.value||''
+  };
+  // Create/update the recurring training templates, without duplicating them.
+  team.events=(team.events||[]).filter(e=>!e.recurringWeekly);
+  const dayNames=Object.fromEntries(WEEK_DAYS.map(([v,,long])=>[v,long]));
+  days.forEach((day,i)=>{
+    team.events.push({
+      id:'weekly-'+day,
+      type:'training',
+      name:`Treino ${dayNames[day]}`,
+      date:'',
+      time:team.weeklyTrainings.time,
+      location:team.weeklyTrainings.location,
+      opponent:'',
+      recurringWeekly:true,
+      weekday:day
+    });
+  });
+  if(typeof saveTeams==='function')saveTeams();
+  if(typeof renderTeamPage==='function')renderTeamPage();
+  if(typeof toast==='function')toast(`Treinos semanais guardados: ${count}x por semana.`);
+}
+
+
+function dateKeyUTC(d){
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth()+1).padStart(2,'0')}-${String(d.getUTCDate()).padStart(2,'0')}`;
+}
+function startOfTodayUTC(){
+  const n=new Date();
+  return new Date(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate()));
+}
+function generateRecurringTrainings(){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(!team)return;
+  const cfg=getWeeklyTrainingConfig(team);
+  const weeks=Math.min(12,Math.max(1,Number(document.getElementById('generateWeeks')?.value||4)));
+  const selectedDays=(cfg.days||[]).map(Number);
+  if(!selectedDays.length){
+    if(typeof toast==='function')toast('Define primeiro os dias dos treinos semanais.');
+    return;
+  }
+  const today=startOfTodayUTC();
+  const end=new Date(today); end.setUTCDate(end.getUTCDate()+weeks*7);
+  team.events=(team.events||[]).filter(e=>!e.generatedWeekly);
+  const names=['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'];
+  let created=0;
+  for(let d=new Date(today);d<=end;d.setUTCDate(d.getUTCDate()+1)){
+    if(!selectedDays.includes(d.getUTCDay()))continue;
+    const key=dateKeyUTC(d);
+    const exists=(team.events||[]).some(e=>e.date===key && e.type==='training' && e.generatedWeekly);
+    if(exists)continue;
+    team.events.push({
+      id:'gen-'+key,
+      type:'training',
+      name:`Treino ${names[d.getUTCDay()]}`,
+      date:key,
+      time:cfg.time||'18:30',
+      location:cfg.location||'',
+      opponent:'',
+      generatedWeekly:true,
+      recurringWeekly:true,
+      weekday:String(d.getUTCDay())
+    });
+    created++;
+  }
+  if(typeof saveTeams==='function')saveTeams();
+  if(typeof renderTeamPage==='function')renderTeamPage();
+  if(typeof toast==='function')toast(`${created} treinos adicionados ao calendário.`);
+}
+
+
+function goHomePriority(type){
+  if(type==='team' && typeof showTeamPage==='function'){
+    if(typeof getSelectedTeam==='function' && getSelectedTeam()) showTeamPage();
+    else if(typeof toast==='function') toast('Seleciona uma equipa primeiro.');
+  }else if(type==='calendar' && typeof showScreen==='function'){
+    showScreen('calendar');
+  }
+}
+function updateHomePriority(){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  const teamEl=document.getElementById('homeTeamInfo');
+  const eventEl=document.getElementById('homeNextEvent');
+  const attEl=document.getElementById('homeAttendanceInfo');
+  if(!team){if(teamEl)teamEl.textContent='Nenhuma';return;}
+  if(teamEl)teamEl.textContent=team.name||'Equipa';
+  const today=new Date(); today.setHours(0,0,0,0);
+  const upcoming=(team.events||[]).filter(e=>e.date).map(e=>({e,d:new Date(e.date+'T00:00:00')})).filter(x=>x.d>=today).sort((a,b)=>a.d-b.d);
+  if(eventEl){
+    if(upcoming[0]){
+      const e=upcoming[0].e;
+      const d=upcoming[0].d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit'});
+      eventEl.textContent=`${d} · ${e.time||'—'} · ${e.name||'Evento'}`;
+    }else eventEl.textContent='Sem eventos marcados';
+  }
+  if(attEl){
+    const players=team.players||[];
+    let total=0, present=0;
+    players.forEach(pl=>{
+      const a=pl.attendance||{};
+      Object.values(a).forEach(v=>{total++; if(v===true||v==='present')present++;});
+    });
+    attEl.textContent=total?`${Math.round(present/total*100)}% média`:'Ainda sem registos';
+  }
+}
+
+setTimeout(()=>{updateHomePriority();renderParentWeek();updateCoachHome();populateCoachTeamSelect();const t=typeof getSelectedTeam==='function'?getSelectedTeam():null;if(t){renderCoachConvocation(t);renderCoachMatchManagement(t);renderCoachTrainingPanel(t);renderParentConvocation(t);renderTeamQuickStats(t);renderPlayerAdminTools();}},50);
+
+function parentWeekTeam(){
+  return typeof getSelectedTeam==='function'?getSelectedTeam():null;
+}
+function formatShortDate(dateStr){
+  if(!dateStr)return '';
+  const d=new Date(dateStr+'T00:00:00');
+  return d.toLocaleDateString('pt-PT',{weekday:'short',day:'2-digit',month:'2-digit'});
+}
+function renderParentWeek(){
+  const wrap=document.getElementById('parentWeekContent');
+  const card=document.getElementById('parentWeekCard');
+  if(!wrap||!card)return;
+  const role=typeof currentRole!=='undefined'?currentRole:null;
+  if(role && role!=='parent'){card.style.display='none';return;}
+  card.style.display='';
+  const team=parentWeekTeam();
+  if(!team){wrap.innerHTML='<p class="muted">Nenhuma equipa selecionada.</p>';return;}
+
+  const player=(team.players||[])[0] || {name:'Lucas Ferreira',photo:'',number:'',position:''};
+  const profileName=document.getElementById('parentChildName');
+  const profileTeam=document.getElementById('parentChildTeam');
+  const img=document.getElementById('parentChildPhoto');
+  const initials=document.getElementById('parentChildInitials');
+  if(profileName)profileName.textContent=player.name||'Lucas Ferreira';
+  if(profileTeam)profileTeam.textContent=`${team.name||'Equipa'}${player.number?' · #'+player.number:''}${player.position?' · '+player.position:''}`;
+  if(img){
+    if(player.photo){img.src=player.photo;img.style.display='block';if(initials)initials.style.display='none';}
+    else {img.style.display='none';if(initials){initials.style.display='flex';initials.textContent=(player.name||'LF').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();}}
+  }
+
+  const cfg=getWeeklyTrainingConfig(team);
+  const dayMap={0:'Dom',1:'Seg',2:'Ter',3:'Qua',4:'Qui',5:'Sex',6:'Sáb'};
+  const now=new Date(); now.setHours(0,0,0,0);
+  const monday=new Date(now); const dow=monday.getDay(); monday.setDate(monday.getDate()-(dow===0?6:dow-1));
+
+  const week=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(monday); d.setDate(monday.getDate()+i);
+    const key=d.toISOString().slice(0,10);
+    let event=(team.events||[]).find(e=>e.date===key && e.type==='match') ||
+              (team.events||[]).find(e=>e.date===key && e.type==='training');
+    const weekday=String(d.getDay());
+    if(!event && (cfg.days||[]).includes(weekday)){
+      event={id:`planned-${key}`,type:'training',date:key,time:cfg.time||'18:30',location:cfg.location||'',name:'Treino'};
+    }
+    week.push({d,key,event});
+  }
+
+  wrap.innerHTML=`<div class="week-calendar">
+    <div class="calendar-title"><strong>Esta semana</strong><span class="muted">Toca num dia para responder</span></div>
+    <div class="calendar-days">${week.map(({d,key,event})=>{
+      const value=localStorage.getItem('cgParentAvailability_'+team.name+'_'+key)||'';
+      const isToday=d.getTime()===now.getTime();
+      return `<div class="calendar-day ${isToday?'today':''} ${event?'has-event':''}" onclick="openParentDay('${key}')">
+        <small>${dayMap[d.getDay()]}</small><b>${d.getDate()}</b>
+        ${event?`<span class="day-event">${event.type==='match'?'⚽':'🏃'} ${event.time||''}</span>`:'<span class="day-empty">—</span>'}
+        ${value==='yes'?'<em>✓</em>':value==='no'?'<em>×</em>':''}
+      </div>`;
+    }).join('')}</div>
+    <div id="parentDayDetails" class="parent-day-details">
+<div id="parentChildHero" class="parent-child-hero">
+  <div id="parentChildPhoto"></div>
+  <div>
+    <div class="eyebrow">O MEU JOGADOR</div>
+    <h2 id="parentChildName">—</h2>
+    <p id="parentChildMeta">Equipa · posição</p>
+  </div>
+  <div id="parentChildNumber" class="child-number">#—</div>
+</div>
+</div>
+  </div>`;
+  const first=week.find(x=>x.event);
+  if(first)openParentDay(first.key);
+  else document.getElementById('parentDayDetails').innerHTML='<p class="muted">Não há treinos ou jogos definidos para esta semana.</p>';
+}
+function openParentDay(key){
+  const team=parentWeekTeam(); const box=document.getElementById('parentDayDetails');
+  if(!team||!box)return;
+  const event=(team.events||[]).find(e=>e.date===key && (e.type==='match'||e.type==='training'));
+  const cfg=getWeeklyTrainingConfig(team);
+  const planned=!event && (cfg.days||[]).includes(String(new Date(key+'T00:00:00').getDay()));
+  if(!event&&!planned){box.innerHTML='<p class="muted">Dia sem atividade.</p>';return;}
+  const e=event||{id:'planned-'+key,type:'training',name:'Treino',time:cfg.time||'18:30',location:cfg.location||''};
+  const storageKey='cgParentAvailability_'+team.name+'_'+key;
+  const value=localStorage.getItem(storageKey)||'';
+  box.innerHTML=`<div class="parent-activity">
+    <div><strong>${e.type==='match'?'⚽ Jogo':'🏃 Treino'} · ${formatShortDate(key)}</strong>
+    <small>${e.time||'—'}${e.location?' · '+e.location:''}${e.opponent?' · '+e.opponent:''}</small></div>
+    <div class="attendance-actions">
+      <button type="button" class="${value==='yes'?'active':''}" onclick="setParentAvailability('${storageKey}','yes',this);markParentCalendar('${key}','yes')">Vou</button>
+      <button type="button" class="${value==='no'?'active':''}" onclick="setParentAvailability('${storageKey}','no',this);markParentCalendar('${key}','no')">Não vou</button>
+    </div>
+  </div>`;
+}
+function markParentCalendar(key,value){
+  document.querySelectorAll('.calendar-day').forEach(day=>{
+    if(day.getAttribute('onclick')===`openParentDay('${key}')`){
+      let em=day.querySelector('em'); if(!em){em=document.createElement('em');day.appendChild(em);}
+      em.textContent=value==='yes'?'✓':'×';
+    }
+  });
+}
+
+function setParentAvailability(key,value,button){
+  localStorage.setItem(key,value);
+  const parent=button.parentElement;
+  parent.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+  button.classList.add('active');
+  if(typeof toast==='function')toast(value==='yes'?'Presença registada.':'Indisponibilidade registada.');
+}
+
+
+function isCoachOrAdmin(){
+  const role=typeof currentRole!=='undefined'?currentRole:null;
+  return role==='coach'||role==='admin';
+}
+function openCoachTeam(){
+  if(typeof showTeamPage==='function'){
+    showTeamPage();
+    setTimeout(function(){
+      const t=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+      if(t){if(typeof renderCoachTeamStatus==='function')renderCoachTeamStatus(t);if(typeof renderCoachConvocation==='function')renderCoachConvocation(t);if(typeof renderCoachMatchManagement==='function')renderCoachMatchManagement(t);if(typeof renderCoachTrainingPanel==='function')renderCoachTrainingPanel(t);if(typeof renderTeamQuickStats==='function')renderTeamQuickStats(t);if(typeof renderPlayerAdminTools==='function')renderPlayerAdminTools();}
+    },50);
+  }
+}
+function getPlayerAvailabilityForTeam(team,player){
+  const prefix='cgParentAvailability_'+team.name+'_';
+  const keys=[];
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith(prefix))keys.push(k);
+    }
+  }catch(e){}
+  let yes=0,no=0,pending=0;
+  keys.forEach(k=>{const v=localStorage.getItem(k); if(v==='yes')yes++; else if(v==='no')no++;});
+  // Prototype has one parent availability stream; keep player status simple until parent-child accounts exist.
+  if(yes) return 'Disponível';
+  if(no) return 'Indisponível';
+  return 'Sem resposta';
+}
+function updateCoachHome(){
+  const card=document.getElementById('coachTeamCard');
+  if(!card)return;
+  if(!isCoachOrAdmin()){card.style.display='none';return;}
+  card.style.display='';
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(!team)return;
+  const players=team.players||[];
+  const count=document.getElementById('coachPlayerCount');
+  const name=document.getElementById('coachTeamName');
+  const available=document.getElementById('coachAvailableCount');
+  if(name)name.textContent=team.name||'Equipa';
+  if(count)count.textContent=String(players.length);
+  let availableCount=0;
+  players.forEach(p=>{if(getPlayerAvailabilityForTeam(team,p)==='Disponível')availableCount++;});
+  if(available)available.textContent=String(availableCount);
+}
+function renderCoachTeamStatus(team){
+  if(!isCoachOrAdmin()||!team)return;
+  const container=document.getElementById('teamAttendance');
+  if(!container)return;
+  let box=document.getElementById('coachAvailabilityPanel');
+  if(!box){
+    box=document.createElement('div');box.id='coachAvailabilityPanel';box.className='card';box.style.marginTop='12px';
+    container.parentNode.insertBefore(box,container);
+  }
+
+  const cfg=getWeeklyTrainingConfig(team);
+  const today=new Date(); today.setHours(0,0,0,0);
+  const monday=new Date(today);
+  const dow=monday.getDay();
+  monday.setDate(monday.getDate()-(dow===0?6:dow-1));
+  const cols=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);d.setDate(monday.getDate()+i);
+    const key=d.toISOString().slice(0,10);
+    const real=(team.events||[]).find(e=>e.date===key&&(e.type==='match'||e.type==='training'));
+    const isTraining=!real&&(cfg.days||[]).includes(String(d.getDay()));
+    if(real||isTraining)cols.push({key,d,event:real||{type:'training',name:'Treino',time:cfg.time||'18:30'}});
+  }
+  const dayNames=['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const players=team.players||[];
+  const nextMatch=(team.events||[]).filter(e=>e.type==='match'&&e.date&&new Date(e.date+'T00:00:00')>=today).sort((a,b)=>a.date.localeCompare(b.date))[0];
+
+  box.innerHTML=`<div class="section-head"><div><h3>📋 Presenças da equipa</h3><p class="muted">Clica numa célula para alternar Presente / Absent.</p></div></div>
+  ${nextMatch?`<div class="coach-next-match"><strong>⚽ Próximo jogo: ${formatShortDate(nextMatch.date)}</strong><div class="muted">${nextMatch.time||'—'}${nextMatch.opponent?' · '+nextMatch.opponent:''}</div></div>`:''}
+  <div class="coach-attendance-table-wrap"><table class="coach-attendance-table">
+  <thead><tr><th>Jogador</th>${cols.map(c=>`<th>${dayNames[c.d.getDay()]} ${c.d.getDate()}<br><small>${c.event.type==='match'?'⚽ Jogo':'🏃 Treino'}</small></th>`).join('')}</tr></thead>
+  <tbody>${players.map((pl,pi)=>`<tr><td><strong>${pl.name||'Jogador'}</strong>${pl.number?' · #'+pl.number:''}</td>
+  ${cols.map(c=>{
+    const v=(pl.attendance||{})[c.key];
+    const text=v===true||v==='present'?'Presente':v===false||v==='absent'?'Absent':'—';
+    const cls=text==='Presente'?'att-present':text==='Absent'?'att-absent':'att-pending';
+    return `<td><span class="att-cell ${cls}" onclick="toggleCoachAttendance('${team.name.replace(/'/g,"\\'")}','${pi}','${c.key}')">${text}</span></td>`;
+  }).join('')}</tr>`).join('')}</tbody></table></div>
+  <div class="coach-table-note">Presente → Absent → —</div>`;
+}
+function toggleCoachAttendance(teamName,playerIndex,dateKey){
+  const teams=typeof getTeams==='function'?getTeams():[];
+  const team=teams.find(t=>t.name===teamName);
+  if(!team||!team.players||!team.players[playerIndex])return;
+  const pl=team.players[playerIndex];
+  pl.attendance=pl.attendance||{};
+  const v=pl.attendance[dateKey];
+  pl.attendance[dateKey]=v===true||v==='present'?false:v===false||v==='absent'?null:true;
+  if(pl.attendance[dateKey]===null)delete pl.attendance[dateKey];
+  if(typeof saveTeams==='function')saveTeams();
+  renderCoachTeamStatus(team);
+  if(typeof toast==='function')toast(pl.attendance[dateKey]===true?'Presença marcada.':pl.attendance[dateKey]===false?'Falta marcada.':'Registo limpo.');
+}
+
+function populateCoachTeamSelect(){
+  const sel=document.getElementById('coachTeamSelect');
+  if(!sel||typeof getTeams!=='function')return;
+  const teams=getTeams();
+  const current=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  sel.innerHTML=teams.map(t=>`<option value="${String(t.name).replace(/"/g,'&quot;')}">${t.name}</option>`).join('');
+  if(current)sel.value=current.name;
+}
+function selectCoachTeam(name){
+  if(typeof setSelectedTeam==='function')setSelectedTeam(name);
+  else localStorage.setItem('cgSelectedTeam',name);
+  if(typeof updateCoachHome==='function')updateCoachHome();
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(team&&typeof renderCoachTeamStatus==='function')renderCoachTeamStatus(team);
+  if(typeof toast==='function')toast(`Equipa: ${name}`);
+}
+
+
+function getNextMatch(team){
+  if(!team)return null;
+  const today=new Date();today.setHours(0,0,0,0);
+  return (team.events||[]).filter(e=>e.type==='match'&&e.date&&new Date(e.date+'T00:00:00')>=today)
+    .sort((a,b)=>a.date.localeCompare(b.date))[0]||null;
+}
+function renderCoachConvocation(team){
+  const box=document.getElementById('coachConvocationContent');
+  if(!box||!isCoachOrAdmin()||!team)return;
+  const game=getNextMatch(team), players=team.players||[];
+  if(!game){box.innerHTML='<p class="muted">Cria primeiro um jogo para fazer a convocatória.</p>';return;}
+  game.convocation=game.convocation||[];
+  const selected=new Set(game.convocation); game.parentConfirmations=game.parentConfirmations||{};
+  box.innerHTML=`<div class="convocation-top">
+    <div class="convocation-count"><small>Próximo jogo</small><br><strong>${formatShortDate(game.date)} · ${game.time||'—'}</strong>${game.opponent?`<br><small>${game.opponent}</small>`:''}</div>
+    <div class="convocation-count"><small>Convocados</small><br><strong id="convocationSelectedCount">${selected.size}</strong></div>
+  </div>
+  <div class="confirmed-count">Confirmações dos pais aparecem aqui depois de responderem.</div><div class="convocation-list">${players.map((pl,i)=>`<div class="convocation-player ${selected.has(i)?'selected':''}">
+    <label><input type="checkbox" ${selected.has(i)?'checked':''} onchange="toggleConvocation(${i},this.checked)"><strong>${pl.name||'Jogador'}</strong>${pl.number?' · #'+pl.number:''}</label>
+    <span class="convocation-status">${selected.has(i)?(game.parentConfirmations[String(i)]==='yes'?'Pai confirmou':game.parentConfirmations[String(i)]==='no'?'Pai não pode':'Aguarda pai'):getPlayerAvailabilityForTeam(team,pl)}</span>
+  </div>`).join('')}</div>
+  <button type="button" class="btn primary" style="margin-top:10px" onclick="saveConvocation()">💾 Guardar convocatória</button>`;
+}
+function toggleConvocation(index,checked){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  const game=getNextMatch(team);if(!game)return;
+  game.convocation=game.convocation||[];
+  if(checked&&!game.convocation.includes(index))game.convocation.push(index);
+  if(!checked)game.convocation=game.convocation.filter(i=>i!==index);
+  const c=document.getElementById('convocationSelectedCount');if(c)c.textContent=game.convocation.length;
+  const row=document.querySelectorAll('.convocation-player')[index];if(row)row.classList.toggle('selected',checked);
+}
+function saveConvocation(){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(!team)return;
+  if(typeof saveTeams==='function')saveTeams();
+  renderCoachConvocation(team);renderCoachMatchManagement(team);
+  if(typeof renderParentConvocation==='function')renderParentConvocation(team);
+  if(typeof toast==='function')toast('Convocatória guardada.');
+}
+function renderParentConvocation(team){
+  const box=document.getElementById('parentConvocationContent');
+  if(!box||!team)return;
+  const game=getNextMatch(team);
+  const player=(team.players||[])[0];
+  if(!game||!player){box.innerHTML='';return;}
+  const convocated=(game.convocation||[]).includes(0);
+  if(!convocated){
+    box.innerHTML=`<div class="coach-next-match"><strong>⚽ Próximo jogo · ${formatShortDate(game.date)}</strong>
+      <div class="muted">${game.time||'—'}${game.opponent?' · '+game.opponent:''}</div>
+      <div style="margin-top:7px"><strong>${player.name||'O teu filho'} não está convocado.</strong></div></div>`;
+    return;
+  }
+  game.parentConfirmations=game.parentConfirmations||{};
+  const status=game.parentConfirmations['0']||'';
+  box.innerHTML=`<div class="convocation-confirm">
+    <strong>⚽ ${player.name||'O teu filho'} está ✅ CONVOCADO</strong>
+    <div class="muted">${formatShortDate(game.date)} · ${game.time||'—'}${game.opponent?' · '+game.opponent:''}</div>
+    <div style="margin-top:7px;font-size:12px">Vais levar o teu filho ao jogo?</div>
+    <div class="confirm-buttons">
+      <button type="button" class="btn ${status==='yes'?'primary':''}" onclick="confirmGameAttendance('yes')">✅ Vou</button>
+      <button type="button" class="btn ${status==='no'?'primary':''}" onclick="confirmGameAttendance('no')">❌ Não vou</button>
+    </div>
+    <div class="confirmed-count">${status==='yes'?'Presença confirmada.':status==='no'?'Indisponibilidade comunicada.':'Ainda não respondeste.'}</div>
+  </div>`;
+}
+function confirmGameAttendance(value){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  const game=getNextMatch(team);
+  if(!team||!game)return;
+  game.parentConfirmations=game.parentConfirmations||{};
+  game.parentConfirmations['0']=value;
+  if(typeof saveTeams==='function')saveTeams();
+  renderParentConvocation(team);
+  if(typeof toast==='function')toast(value==='yes'?'Presença no jogo confirmada.':'Indisponibilidade comunicada.');
+}
+
+function renderCoachMatchManagement(team){
+  const box=document.getElementById('coachMatchManagementContent');
+  const panel=document.getElementById('coachMatchManagement');
+  if(!box||!panel)return;
+  if(!isCoachOrAdmin()){panel.style.display='none';return;}
+  panel.style.display='';
+  const game=getNextMatch(team);
+  if(!game){box.innerHTML='<p class="muted">Ainda não há próximo jogo.</p>';return;}
+  const players=team.players||[], conv=game.convocation||[], conf=game.parentConfirmations||{};
+  const confirmed=conv.filter(i=>conf[String(i)]==='yes').length;
+  const declined=conv.filter(i=>conf[String(i)]==='no').length;
+  const waiting=conv.length-confirmed-declined;
+  box.innerHTML=`<div class="match-management-grid">
+    <div class="match-management-stat"><small>Convocados</small><strong>${conv.length}</strong></div>
+    <div class="match-management-stat"><small>Confirmaram</small><strong>${confirmed}</strong></div>
+    <div class="match-management-stat"><small>Não podem</small><strong>${declined}</strong></div>
+    <div class="match-management-stat"><small>A aguardar</small><strong>${waiting}</strong></div>
+  </div>
+  <div class="match-confirm-list">${conv.map(i=>{
+    const pl=players[i]||{name:'Jogador'};
+    const v=conf[String(i)]||'';
+    const label=v==='yes'?'Pai confirmou':v==='no'?'Pai não pode':'Aguarda pai';
+    return `<div class="match-confirm-row"><span><strong>${pl.name}</strong>${pl.number?' · #'+pl.number:''}<br><small>${label}</small></span><span class="match-confirm-pill">${v==='yes'?'✅':v==='no'?'❌':'⏳'}</span></div>`;
+  }).join('')}</div>`;
+}
+
+
+function getUpcomingTrainings(team){
+  const today=new Date();today.setHours(0,0,0,0);
+  const cfg=getWeeklyTrainingConfig(team);
+  const arr=[];
+  for(let i=0;i<14;i++){
+    const d=new Date(today);d.setDate(today.getDate()+i);
+    const key=d.toISOString().slice(0,10);
+    const real=(team.events||[]).find(e=>e.date===key&&e.type==='training');
+    if(real|| (cfg.days||[]).includes(String(d.getDay()))){
+      arr.push({key,d,event:real||{type:'training',name:'Treino',time:cfg.time||'18:30',location:cfg.location||''}});
+    }
+  }
+  return arr.slice(0,6);
+}
+function renderCoachTrainingPanel(team){
+  const box=document.getElementById('coachTrainingContent'), panel=document.getElementById('coachTrainingPanel');
+  if(!box||!panel)return;
+  if(!isCoachOrAdmin()){panel.style.display='none';return;}
+  panel.style.display='';
+  const trainings=getUpcomingTrainings(team);
+  if(!trainings.length){box.innerHTML='<p class="muted">Não há treinos definidos.</p>';return;}
+  const selected=window._coachTrainingDate||trainings[0].key;
+  box.innerHTML=`<div class="training-picker">${trainings.map(t=>`<button type="button" class="${t.key===selected?'active':''}" onclick="selectCoachTraining('${t.key}')">${formatShortDate(t.key)}</button>`).join('')}</div>
+  <div id="selectedTrainingAttendance"></div>`;
+  renderSelectedTrainingAttendance(team,selected);
+}
+function selectCoachTraining(key){
+  window._coachTrainingDate=key;
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(team)renderCoachTrainingPanel(team);
+}
+function renderSelectedTrainingAttendance(team,key){
+  const box=document.getElementById('selectedTrainingAttendance');if(!box)return;
+  const players=team.players||[];
+  let present=0,absent=0;
+  box.innerHTML=`<div class="training-att-list">${players.map((pl,i)=>{
+    const v=(pl.attendance||{})[key];
+    if(v===true||v==='present')present++; if(v===false||v==='absent')absent++;
+    const text=v===true||v==='present'?'Presente':v===false||v==='absent'?'Absent':'—';
+    return `<div class="training-att-row"><span><strong>${pl.name||'Jogador'}</strong>${pl.number?' · #'+pl.number:''}</span><div class="training-att-actions">
+      <button type="button" class="${text==='Presente'?'active':''}" onclick="setTrainingAttendance(${i},'${key}',true)">✓</button>
+      <button type="button" class="${text==='Absent'?'active':''}" onclick="setTrainingAttendance(${i},'${key}',false)">✕</button>
+    </div></div>`;
+  }).join('')}</div>
+  <div class="coach-table-note">Presentes: ${present} · Faltas: ${absent} · Sem registo: ${players.length-present-absent}</div>`;
+}
+function setTrainingAttendance(playerIndex,key,value){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(!team||!team.players[playerIndex])return;
+  const pl=team.players[playerIndex];pl.attendance=pl.attendance||{};
+  pl.attendance[key]=value;
+  if(typeof saveTeams==='function')saveTeams();
+  renderCoachTrainingPanel(team);renderCoachTeamStatus(team);
+}
+function renderTeamQuickStats(team){
+  if(!team)return;
+  const host=document.querySelector('#teamPage .team-header')||document.querySelector('.team-header');
+  if(!host||document.getElementById('teamQuickStats'))return;
+  const players=team.players||[];
+  const cfg=getWeeklyTrainingConfig(team);
+  const stats=document.createElement('div');stats.id='teamQuickStats';stats.className='team-quick-stats';
+  stats.innerHTML=`<div class="team-quick-stat"><small>Jogadores</small><strong>${players.length}</strong></div>
+  <div class="team-quick-stat"><small>Treinos / semana</small><strong>${cfg.count||0}</strong></div>
+  <div class="team-quick-stat"><small>Treinos definidos</small><strong>${(team.events||[]).filter(e=>e.type==='training').length}</strong></div>
+  <div class="team-quick-stat"><small>Jogos futuros</small><strong>${(team.events||[]).filter(e=>e.type==='match'&&e.date&&new Date(e.date)>=new Date()).length}</strong></div>`;
+  host.parentNode.insertBefore(stats,host.nextSibling);
+}
+
+
+function renderPlayerAdminTools(){
+  const box=document.getElementById('playerAdminToolsContent'), panel=document.getElementById('playerAdminTools');
+  if(!box||!panel)return;
+  const role=typeof currentRole!=='undefined'?currentRole:null;
+  if(role!=='admin'){panel.style.display='none';return;}
+  panel.style.display='';
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(!team){box.innerHTML='<p class="muted">Seleciona uma equipa.</p>';return;}
+  const q=(document.getElementById('playerSearchInput')?.value||'').trim().toLowerCase();
+  const players=(team.players||[]).map((p,i)=>({p,i})).filter(x=>!q||(x.p.name||'').toLowerCase().includes(q)||String(x.p.number||'').includes(q));
+  box.innerHTML=`<button type="button" class="btn primary" onclick="openPlayerModal()">➕ Novo jogador</button>
+  <div class="player-admin-list">${players.map(({p,i})=>{
+    const initials=(p.name||'J').split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
+    const photo=p.photo?`<img class="player-mini-photo" src="${p.photo}" alt="">`:`<span class="player-mini-photo">${initials}</span>`;
+    return `<div class="player-admin-row ${p.active===false?'player-inactive':''}">
+      <div class="player-admin-main">${photo}<div><strong>${p.name||'Sem nome'}</strong><small>${p.number?'#'+p.number+' · ':''}${p.position||'Sem posição'}${p.active===false?' · Inativo':''}</small></div></div>
+      <div class="player-admin-actions"><button type="button" onclick="editPlayer(${i})">✏️ Editar</button><button type="button" onclick="togglePlayerActive(${i})">${p.active===false?'Ativar':'Desativar'}</button></div>
+    </div>`;
+  }).join('')}</div>`;
+}
+function editPlayer(index){
+  if(typeof openPlayerModal==='function')openPlayerModal(index);
+  else if(typeof toast==='function')toast('Editor de jogador disponível na gestão da equipa.');
+}
+function togglePlayerActive(index){
+  const team=typeof getSelectedTeam==='function'?getSelectedTeam():null;
+  if(!team||!team.players[index])return;
+  team.players[index].active=team.players[index].active===false;
+  if(typeof saveTeams==='function')saveTeams();
+  renderPlayerAdminTools();
+  if(typeof renderTeamPage==='function')renderTeamPage();
+  if(typeof toast==='function')toast(team.players[index].active===false?'Jogador desativado.':'Jogador ativado.');
+}
+
+</script>
+<script>
+(function(){
+  function cgRenderParentChildHero(){
+    try{
+      if(typeof state==='undefined') return;
+      var team = state.teams && state.teams.find(function(t){return t.name===state.selectedTeam;}) || (state.teams||[])[0];
+      var player = team && (team.players||[])[0];
+      if(!player) return;
+      var photo=document.getElementById('parentChildPhoto'), name=document.getElementById('parentChildName'),
+          meta=document.getElementById('parentChildMeta'), num=document.getElementById('parentChildNumber');
+      if(!photo||!name) return;
+      var initials=(player.name||'?').split(/\s+/).map(function(x){return x[0]||''}).slice(0,2).join('').toUpperCase();
+      photo.innerHTML=player.photo
+        ? '<img class="child-photo" src="'+String(player.photo).replace(/"/g,'&quot;')+'" alt="">'
+        : '<div class="child-initials">'+initials+'</div>';
+      name.textContent=player.name||'Jogador';
+      meta.textContent=[team.name,player.position||'Jogador'].filter(Boolean).join(' · ');
+      num.textContent='#'+(player.number||'—');
+    }catch(e){}
+  }
+  window.cgRenderParentChildHero=cgRenderParentChildHero;
+  document.addEventListener('DOMContentLoaded',function(){setTimeout(cgRenderParentChildHero,50);});
+})();
+</script>
+</body>
+</html>

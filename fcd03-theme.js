@@ -24,5 +24,5 @@ body{background:linear-gradient(180deg,#f7f7f7 0,#fff 35%,#f4f4f4 100%)}
  roleUI();
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
-setInterval(roleUI,1000);
+window.addEventListener('storage',roleUI);
 })();

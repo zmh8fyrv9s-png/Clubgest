@@ -25,12 +25,26 @@ function apply(){
  const legacy=document.querySelector('.brand small');
  if(legacy && /U16/.test(legacy.textContent)) legacy.textContent='FC Déifferdeng 03 · Formação U7 · U9 · U11';
 }
+function fixNav(){
+ const map={'n-home':'home','n-att':'attendance','n-cal':'calendar','n-man':'manage','n-team':'team'};
+ Object.keys(map).forEach(function(id){
+  const b=document.getElementById(id);if(!b||b.dataset.cgNavFixed)return;
+  b.dataset.cgNavFixed='1';
+  b.addEventListener('click',function(e){
+   e.preventDefault();e.stopImmediatePropagation();
+   const target=map[id];
+   if(typeof window.go==='function')window.go(target);
+   else if(window.ClubGestNav&&typeof window.ClubGestNav.go==='function')window.ClubGestNav.go(target);
+  },true);
+ });
+}
 const s=document.createElement('style');s.textContent=`
 .crest.cg-mark{font-size:0!important;background:#090909!important;border:2px solid #e30613!important;box-shadow:0 8px 22px #e3061333!important;color:transparent!important;overflow:hidden!important;padding:0!important}.crest.cg-mark svg{width:100%;height:100%;display:block}.brand.cg-brand{color:#111!important}.brand.cg-brand .crest{width:48px;height:48px;border-radius:15px}.cg-wordmark{display:flex;align-items:baseline;line-height:.9;letter-spacing:-.045em;font-size:22px;font-weight:950;font-style:italic}.cg-wordmark span{color:#111}.cg-wordmark b{color:#e30613;font-weight:950}.cg-brand small{margin-top:4px!important}.hero .crest.cg-mark{width:86px;height:86px;border-radius:22px}.card.stat{position:relative;overflow:hidden}.card.stat:after{content:'';position:absolute;right:-24px;bottom:-34px;width:90px;height:90px;border:2px solid #e3061322;border-radius:50%}.stat small{font-weight:700}.btn{transition:transform .18s ease,box-shadow .18s ease}.btn:hover{transform:translateY(-1px)}
 .nav{padding-bottom:max(0px,env(safe-area-inset-bottom))}.navin{padding-bottom:env(safe-area-inset-bottom)}.nav button{min-height:54px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}.select,.btn,button,input,select,textarea{touch-action:manipulation}@media(max-width:760px){.brand.cg-brand .crest{width:44px;height:44px}.cg-wordmark{font-size:19px}.hero .crest.cg-mark{width:70px;height:70px}.today{margin-bottom:10px}}
 `;
 document.head.appendChild(s);
 apply();
-const observer=new MutationObserver(function(){apply();});
+fixNav();
+const observer=new MutationObserver(function(){apply();fixNav();});
 observer.observe(document.documentElement,{childList:true,subtree:true});
 })();

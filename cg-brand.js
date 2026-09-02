@@ -25,25 +25,12 @@ function apply(){
  const legacy=document.querySelector('.brand small');
  if(legacy && /U16/.test(legacy.textContent)) legacy.textContent='FC Déifferdeng 03 · Formação U7 · U9 · U11';
 }
-function addAppPolish(){
- if(document.getElementById('cg-quickbar'))return;
- const main=document.querySelector('.main');
- const today=document.querySelector('.today');
- if(!main||!today)return;
- const bar=document.createElement('div');
- bar.id='cg-quickbar';
- bar.innerHTML='<button type="button" data-go="home"><span>⌂</span><b>Início</b></button><button type="button" data-go="attendance"><span>✓</span><b>Presenças</b></button><button type="button" data-go="calendar"><span>▣</span><b>Hoje</b></button><button type="button" data-go="team"><span>CG</span><b>Equipa</b></button>';
- today.insertAdjacentElement('afterend',bar);
- bar.addEventListener('click',function(e){const b=e.target.closest('button[data-go]');if(!b)return;const fn=window.go;if(typeof fn==='function')fn(b.dataset.go);});
-}
 const s=document.createElement('style');s.textContent=`
 .crest.cg-mark{font-size:0!important;background:#090909!important;border:2px solid #e30613!important;box-shadow:0 8px 22px #e3061333!important;color:transparent!important;overflow:hidden!important;padding:0!important}.crest.cg-mark svg{width:100%;height:100%;display:block}.brand.cg-brand{color:#111!important}.brand.cg-brand .crest{width:48px;height:48px;border-radius:15px}.cg-wordmark{display:flex;align-items:baseline;line-height:.9;letter-spacing:-.045em;font-size:22px;font-weight:950;font-style:italic}.cg-wordmark span{color:#111}.cg-wordmark b{color:#e30613;font-weight:950}.cg-brand small{margin-top:4px!important}.hero .crest.cg-mark{width:86px;height:86px;border-radius:22px}.card.stat{position:relative;overflow:hidden}.card.stat:after{content:'';position:absolute;right:-24px;bottom:-34px;width:90px;height:90px;border:2px solid #e3061322;border-radius:50%}.stat small{font-weight:700}.btn{transition:transform .18s ease,box-shadow .18s ease}.btn:hover{transform:translateY(-1px)}
-#cg-quickbar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 14px}#cg-quickbar button{min-height:58px;background:#fff;border:1px solid #e7e9ee;border-radius:16px;display:flex;align-items:center;justify-content:center;gap:6px;flex-direction:column;color:#344054;box-shadow:0 5px 16px #1018280a;-webkit-tap-highlight-color:transparent;touch-action:manipulation}#cg-quickbar button span{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:#f2f4f7;font-size:14px;font-weight:900}#cg-quickbar button:first-child span,#cg-quickbar button:nth-child(2) span{background:#fdebed;color:#c8102e}#cg-quickbar b{font-size:10px}#cg-quickbar button:active{transform:scale(.97)}
-.nav{padding-bottom:max(0px,env(safe-area-inset-bottom))}.navin{padding-bottom:env(safe-area-inset-bottom)}.nav button{min-height:54px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}.select,.btn,button,input,select,textarea{touch-action:manipulation}@media(max-width:760px){.brand.cg-brand .crest{width:44px;height:44px}.cg-wordmark{font-size:19px} .hero .crest.cg-mark{width:70px;height:70px}#cg-quickbar{gap:6px}#cg-quickbar button{min-height:60px;border-radius:15px}#cg-quickbar b{font-size:9px}.today{margin-bottom:10px}}
-@media(min-width:761px){#cg-quickbar{max-width:720px}}
+.nav{padding-bottom:max(0px,env(safe-area-inset-bottom))}.navin{padding-bottom:env(safe-area-inset-bottom)}.nav button{min-height:54px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}.select,.btn,button,input,select,textarea{touch-action:manipulation}@media(max-width:760px){.brand.cg-brand .crest{width:44px;height:44px}.cg-wordmark{font-size:19px}.hero .crest.cg-mark{width:70px;height:70px}.today{margin-bottom:10px}}
 `;
 document.head.appendChild(s);
-apply();addAppPolish();
-const observer=new MutationObserver(function(){apply();addAppPolish();});
+apply();
+const observer=new MutationObserver(function(){apply();});
 observer.observe(document.documentElement,{childList:true,subtree:true});
 })();

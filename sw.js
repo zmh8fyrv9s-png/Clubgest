@@ -1,4 +1,4 @@
-const CACHE='clubgest-v8';
+const CACHE='clubgest-v9';
 const ASSETS=['/','/index.html','/manifest.webmanifest','/icon-192.svg','/icon-512.svg','/access.js','/fcd03-theme.js','/profile-fix.js','/profile-lock.js','/clubgest-data.js'];
 function inject(text){let out=text;const scripts=['/access.js','/fcd03-theme.js','/profile-fix.js','/profile-lock.js','/clubgest-data.js'];for(const src of scripts)if(!out.includes(src))out=out.replace('</body>','<script src="'+src+'"></script></body>');return new Response(out,{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'}})}
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(async c=>{for(const u of ASSETS){try{const r=await fetch(u,{cache:'no-store'});if(r.ok){if(u==='/'||u==='/index.html'){const text=await r.text();await c.put('/index.html',inject(text));}else await c.put(u,r)}}catch(e){}}}).then(()=>self.skipWaiting())));

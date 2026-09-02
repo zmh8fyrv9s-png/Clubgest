@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ClubGest — Protótipo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07111f;color:#f5f7fa;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:430px;margin:auto;min-height:100vh;background:linear-gradient(180deg,#0a1728,#07111f)}
+header{padding:22px 20px 12px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:24px;font-weight:800;letter-spacing:-1px}.logo span{color:#39d98a}
+.avatar{width:40px;height:40px;border-radius:50%;background:#fff;color:#07111f;display:grid;place-items:center;font-weight:800}
+main{padding:8px 18px 100px}.eyebrow{color:#9eacbd;font-size:13px}.title{font-size:30px;font-weight:800;margin:4px 0 18px}
+.card{background:#102238;border:1px solid #1c3148;border-radius:20px;padding:18px;margin:12px 0;box-shadow:0 10px 30px #0002}
+.hero{background:linear-gradient(135deg,#163b30,#102238)}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.badge{display:inline-block;padding:7px 10px;border-radius:999px;background:#173e31;color:#55e39b;font-size:12px;font-weight:700}
+.muted{color:#9eacbd}.big{font-size:27px;font-weight:800}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{background:#0c1b2c;border-radius:15px;padding:14px}
+.btn{border:0;border-radius:14px;padding:12px 14px;background:#39d98a;color:#06120d;font-weight:800;width:100%;margin-top:10px}
+.item{padding:14px 0;border-bottom:1px solid #1c3148}.item:last-child{border-bottom:0}.date{font-weight:800;color:#fff}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);background:#091624ee;backdrop-filter:blur(15px);display:flex;justify-content:space-around;padding:10px 6px 18px;border-top:1px solid #1c3148}
+nav button{background:none;border:0;color:#8e9cad;font-size:11px}.active{color:#39d98a!important}.icon{font-size:21px;display:block;margin-bottom:3px}
+select{background:#102238;color:#fff;border:1px solid #29425c;border-radius:12px;padding:9px}
+.screen{display:none}.screen.show{display:block}
+.notice{font-size:14px;line-height:1.45}
+</style>
+</head>
+<body>
+<div class="app">
+<header><div class="logo">Club<span>Gest</span></div><div class="avatar">SF</div></header>
+<main>
+<section id="home" class="screen show">
+<div class="eyebrow">FCD03 Differdange · Época 2026/27</div>
+<div class="title">Bom dia, Sérgio 👋</div>
+<div class="card hero"><div class="row"><div><div class="muted">Próximo treino</div><div class="big">Hoje · 18:30</div><div class="muted">U9 · Campo Municipal 2</div></div><span class="badge">CONFIRMADO</span></div></div>
+<div class="grid"><div class="mini"><div class="muted">Presenças</div><div class="big">5/6</div></div><div class="mini"><div class="muted">Próximo jogo</div><div class="big">Sáb 10:00</div></div></div>
+<div class="card"><div class="row"><b>📣 Novidade do clube</b><span class="muted">Hoje</span></div><p class="notice">Bem-vindos à nova época! Consulte o calendário e confirme a presença nos treinos.</p></div>
+<div class="card"><b>⚽ U9 vs Racing FC</b><div class="muted">05 Set · 10:00 · Campo Municipal 2</div><button class="btn" onclick="go('games')">Ver convocatória</button></div>
+</section>
+
+<section id="calendar" class="screen"><div class="eyebrow">FCD03 · U9</div><div class="title">Calendário</div>
+<div class="card"><b>Hoje · 02 SET</b><div class="item"><div class="date">18:30 — Treino</div><div class="muted">Campo Municipal 2</div><span class="badge">Confirmado</span></div></div>
+<div class="card"><b>05 SET</b><div class="item"><div class="date">10:00 — Racing FC</div><div class="muted">Jogo amigável · Campo Municipal 2</div></div></div></section>
+
+<section id="attendance" class="screen"><div class="eyebrow">U9 · Lucas Ferreira</div><div class="title">Presenças</div>
+<div class="card"><div class="row"><div><b>Treino de hoje</b><div class="muted">18:30 · Campo Municipal 2</div></div><span class="badge">SIM</span></div><button class="btn">Vou estar presente ✓</button></div>
+<div class="card"><b>Histórico</b><div class="item">02 Set <span class="badge">SIM</span></div><div class="item">30 Ago <span class="badge">SIM</span></div><div class="item">27 Ago <span class="muted">Sem resposta</span></div></div></section>
+
+<section id="games" class="screen"><div class="eyebrow">U9 · Jogos</div><div class="title">Jogos</div>
+<div class="card"><div class="muted">05 SET · 10:00</div><div class="big">FCD03 <span class="muted">vs</span> Racing FC</div><div class="muted">Campo Municipal 2 · Casa</div><div class="item"><b>Convocatória</b><br>Lucas · Tomás · Enzo · Gabriel · Noah · Dinis</div><span class="badge">CONVOCADO</span></div>
+</section>
+
+<section id="news" class="screen"><div class="title">Novidades</div>
+<div class="card"><b>Nova época 2026/27</b><div class="muted">02 Set</div><p class="notice">Toda a informação do clube num só lugar.</p></div>
+<div class="card"><b>Jogo amigável U9</b><div class="muted">01 Set</div><p class="notice">Convocatória disponível na área de Jogos.</p></div></section>
+
+<section id="profile" class="screen"><div class="title">Perfil</div>
+<div class="card"><div class="row"><div><b>Sérgio</b><div class="muted">Encarregado de educação</div></div><span class="badge">PAI</span></div></div>
+<div class="card"><b>Filho</b><div class="item">⚽ Lucas Ferreira · U9</div></div>
+<div class="card"><b>Clube</b><div class="muted">FCD03 Differdange · Luxembourg</div></div></section>
+</main>
+<nav>
+<button class="active" onclick="go('home')"><span class="icon">⌂</span>Início</button>
+<button onclick="go('calendar')"><span class="icon">▣</span>Calendário</button>
+<button onclick="go('attendance')"><span class="icon">✓</span>Presenças</button>
+<button onclick="go('games')"><span class="icon">⚽</span>Jogos</button>
+<button onclick="go('profile')"><span class="icon">●</span>Perfil</button>
+</nav>
+</div>
+<script>
+function go(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('show'));document.getElementById(id).classList.add('show');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));event.currentTarget?.classList.add('active');window.scrollTo(0,0)}
+</script>
+</body></html>

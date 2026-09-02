@@ -18,6 +18,21 @@ function show(reselect,msg){if(reselect)selected='';else if(!selected)selected=l
 window.cgPick=r=>{selected=r;show(false)};window.cgClose=()=>document.getElementById('cg-access')?.remove();
 window.cgContinue=async()=>{if(!selected)return;const u=(document.getElementById('cg-user')?.value||'').trim().toUpperCase(),c=document.getElementById('cg-code')?.value||'',team=document.getElementById('cg-team')?.value||null;if(selected==='parent'||selected==='player'||(selected==='coach'&&!u)||(selected==='admin'&&!u)){localStorage.setItem('cgRole',selected);localStorage.setItem('cgOnboarded','1');document.getElementById('cg-access')?.remove();top();if(typeof window.render==='function')window.render();return}if(selected==='coach'&&/^C\d+U(7|9|11)$/i.test(u)&&!c){localStorage.setItem('cgRole','coach');localStorage.setItem('cgUser',u);localStorage.setItem('cgTeam',team||u.match(/U(7|9|11)$/i)[0]);localStorage.setItem('cgOnboarded','1');document.getElementById('cg-access')?.remove();top();if(typeof window.render==='function')window.render();return}if(selected==='admin'&&u==='A1'){localStorage.setItem('cgRole','admin');localStorage.setItem('cgUser','A1');localStorage.setItem('cgTeam','U9');localStorage.setItem('cgOnboarded','1');document.getElementById('cg-access')?.remove();top();if(typeof window.render==='function')window.render();return}if(!valid(selected,u)){show(false,'<div class="cg-error">Username inválido.</div>');return}if(!c){show(false,'<div class="cg-error">Na demo podes entrar diretamente; o código fica para o fluxo real.</div>');return}try{const key=selected+':'+u;const old=state()[key];const result=await rpc(old?.status==='approved'?'check_access':'request_access',old?.status==='approved'?{p_username:u,p_role:selected,p_code:c}:{p_username:u,p_role:selected,p_team:team,p_code:c});if(result.status==='pending'){const a=state();a[key]={role:selected,user:u,team,status:'pending'};setState(a);show(false,'<div class="cg-pending"><b>Pedido enviado.</b><br>O A1 tem de aprovar.</div>');return}if(result.status==='approved'){localStorage.setItem('cgRole',selected);localStorage.setItem('cgUser',u);localStorage.setItem('cgTeam',result.team||team||'U9');localStorage.setItem('cgOnboarded','1');document.getElementById('cg-access')?.remove();top();if(typeof window.render==='function')window.render();return}show(false,'<div class="cg-error">Acesso não validado.</div>')}catch(e){show(false,'<div class="cg-error">Sem ligação ao servidor.</div>')}};
 function loadCloudDemo(){if(document.getElementById('cg-cloud-demo'))return;const s=document.createElement('script');s.id='cg-cloud-demo';s.src='/clubgest-cloud-demo.js?v=2';s.async=true;document.head.appendChild(s)}
-function boot(){css();addBosnian();top();demoRole();loadCloudDemo();}
+function installNavigationBridge(){
+  window.ClubGestNav={go:function(id){
+    try{
+      if(typeof window.go==='function'){window.go(id);return}
+      const ids=['home','attendance','calendar','manage','team'];
+      if(ids.indexOf(id)<0)id='home';
+      ids.forEach(function(x){const el=document.getElementById(x);if(el)el.classList.toggle('active',x===id)});
+      const nav={home:'n-home',attendance:'n-att',calendar:'n-cal',manage:'n-man',team:'n-team'};
+      Object.keys(nav).forEach(function(x){const b=document.getElementById(nav[x]);if(b)b.classList.toggle('active',x===id)});
+      const fn={home:'renderHome',attendance:'renderAttendance',calendar:'renderCalendar',manage:'renderManage',team:'renderTeam'}[id];
+      if(fn&&typeof window[fn]==='function')window[fn]();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }catch(e){console.error('ClubGest navigation',e)}
+  }};
+}
+function boot(){css();addBosnian();top();demoRole();installNavigationBridge();loadCloudDemo();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();

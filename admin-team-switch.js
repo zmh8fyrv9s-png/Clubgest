@@ -1,33 +1,17 @@
 (function(){
 'use strict';
-const TEAMS=['U7','U9','U11'];
-function isPrivileged(){const r=localStorage.getItem('cgRole')||'';return r==='admin'||r==='coach'}
-function getState(){try{return JSON.parse(localStorage.getItem('clubgest_v3')||'null')}catch(e){return null}}
-function switchTeam(team){
-  if(!isPrivileged()||TEAMS.indexOf(team)<0)return;
-  const d=getState(); if(!d||!d.teams||!d.teams[team])return;
-  d.selected=team;
-  try{localStorage.setItem('clubgest_v3',JSON.stringify(d))}catch(e){}
-  localStorage.setItem('cgViewTeam',team);
-  const badge=document.getElementById('todayTeam');if(badge)badge.textContent=team;
-  if(typeof window.render==='function')window.render();
-  else if(typeof window.ClubGestNav?.go==='function')window.ClubGestNav.go('home');
-}
-function mount(){
-  if(!isPrivileged())return;
-  const top=document.querySelector('.topin');if(!top||document.getElementById('cg-team-view'))return;
-  const sel=document.createElement('select');sel.id='cg-team-view';sel.className='select';sel.title='Ver equipa';
-  sel.setAttribute('aria-label','Ver equipa');
-  const d=getState();const current=(d&&TEAMS.indexOf(d.selected)>=0?d.selected:null)||localStorage.getItem('cgViewTeam')||'U9';
-  TEAMS.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent='Ver '+t;sel.appendChild(o)});
-  sel.value=current;sel.onchange=function(){switchTeam(this.value)};
-  top.insertBefore(sel,top.querySelector('#role')||null);
-}
-function refresh(){
-  const old=document.getElementById('cg-team-view');if(old)old.remove();mount();
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mount);else mount();
-window.addEventListener('storage',refresh);
-new MutationObserver(function(){if(isPrivileged()&&!document.getElementById('cg-team-view'))mount()}).observe(document.documentElement,{childList:true,subtree:true});
+const TEAMS=['U7','U9','U11'],CHILDREN_KEY='cgParentChildren';
+function role(){return localStorage.getItem('cgRole')||'parent'}
+function children(){try{const a=JSON.parse(localStorage.getItem(CHILDREN_KEY)||'[]');return Array.isArray(a)?a.filter(x=>x&&x.name&&TEAMS.includes(x.team)):[]}catch(e){return[]}}
+function state(){try{return JSON.parse(localStorage.getItem('clubgest_v3')||'null')}catch(e){return null}}
+function coachTeam(){const u=(localStorage.getItem('cgUser')||'').toUpperCase(),t=localStorage.getItem('cgTeam');if(TEAMS.includes(t))return t;const m=u.match(/U(7|9|11)$/);return m?'U'+m[1]:'U9'}
+function switchTeam(team){const r=role();if(r==='coach')team=coachTeam();if(!TEAMS.includes(team))return;const d=state();if(!d||!d.teams||!d.teams[team])return;d.selected=team;try{localStorage.setItem('clubgest_v3',JSON.stringify(d))}catch(e){}localStorage.setItem('cgViewTeam',team);if(r==='parent'){const kid=children().find(x=>x.team===team);if(kid)localStorage.setItem('cgActiveChild',kid.name)}const b=document.getElementById('todayTeam');if(b)b.textContent=team;if(typeof window.render==='function')window.render()}
+function esc(v){return String(v).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\\':'&#92;','"':'&quot;'}[m]))}
+function header(){const top=document.querySelector('.topin');if(!top)return;let sel=document.getElementById('cg-team-view');if(sel)sel.remove();const r=role(),d=state(),kids=children();let current=localStorage.getItem('cgViewTeam')||(d&&d.selected)||'U9';if(r==='coach')current=coachTeam();if(r==='parent'&&!TEAMS.includes(current))current=kids[0]?.team||'U9';if(!TEAMS.includes(current))current='U9';sel=document.createElement('select');sel.id='cg-team-view';sel.className='select';sel.title='Ver equipa';sel.setAttribute('aria-label','Ver equipa');const list=r==='coach'?[coachTeam()]:TEAMS;list.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=r==='coach'?t:'Ver '+t;sel.appendChild(o)});sel.value=current;sel.disabled=r==='coach';sel.onchange=function(){switchTeam(this.value)};top.insertBefore(sel,top.querySelector('#role')||null);localStorage.setItem('cgViewTeam',current);if(d&&d.teams&&d.selected!==current){d.selected=current;try{localStorage.setItem('clubgest_v3',JSON.stringify(d))}catch(e){}}}
+function parentHome(){if(role()!=='parent')return;const home=document.getElementById('home');if(!home)return;let box=document.getElementById('cg-parent-children');if(!box){box=document.createElement('div');box.id='cg-parent-children';box.className='card cg-parent-children';home.appendChild(box)}const kids=children(),active=localStorage.getItem('cgActiveChild')||'';box.innerHTML='<div class="head"><div><h3>Os meus filhos</h3><p>Escolha o grupo de cada filho. Pode ter um filho no U7 e outro no U9.</p></div></div><div class="cg-kids">'+(kids.length?kids.map((k,i)=>'<div class="cg-kid"><div><strong>'+esc(k.name)+'</strong><small>'+k.team+(k.name===active?' · selecionado':'')+'</small></div><button type="button" data-kid="'+i+'">Ver '+k.team+'</button></div>').join(''):'<div class="empty">Adicione o nome e o grupo do seu filho.</div>')+'</div><div class="cg-kid-form"><input id="cg-kid-name" placeholder="Nome do filho"><select id="cg-kid-team"><option>U7</option><option>U9</option><option>U11</option></select><button type="button" id="cg-kid-add">Adicionar filho</button></div>';box.querySelectorAll('[data-kid]').forEach(b=>b.onclick=function(){const k=children()[Number(this.dataset.kid)];if(k){localStorage.setItem('cgActiveChild',k.name);switchTeam(k.team)}});box.querySelector('#cg-kid-add').onclick=function(){const n=(box.querySelector('#cg-kid-name').value||'').trim(),t=box.querySelector('#cg-kid-team').value;if(!n)return;const a=children();a.push({name:n,team:t});localStorage.setItem(CHILDREN_KEY,JSON.stringify(a));localStorage.setItem('cgActiveChild',n);switchTeam(t)}}
+function css(){if(document.getElementById('cg-team-css'))return;const s=document.createElement('style');s.id='cg-team-css';s.textContent='.cg-parent-children{margin-top:14px}.cg-kids{display:grid;gap:8px}.cg-kid{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px;border:1px solid #eef0f2;border-radius:14px}.cg-kid strong{display:block;font-size:13px}.cg-kid small{display:block;color:#667085;font-size:10px;margin-top:2px}.cg-kid button{padding:8px 10px;border:0;border-radius:10px;background:#111827;color:#fff;font-size:10px;font-weight:800}.cg-kid-form{display:grid;grid-template-columns:1.5fr .8fr auto;gap:8px;margin-top:10px}.cg-kid-form input,.cg-kid-form select{min-height:40px;border:1px solid #dfe3e8;border-radius:10px;padding:9px;background:#fff}.cg-kid-form button{border:0;border-radius:10px;padding:9px 12px;background:#e30613;color:#fff;font-weight:800}@media(max-width:760px){.cg-kid-form{grid-template-columns:1fr 1fr}.cg-kid-form button{grid-column:1/-1}}';document.head.appendChild(s)}
+function refresh(){css();header();parentHome()}
+function boot(){refresh();new MutationObserver(refresh).observe(document.documentElement,{childList:true,subtree:true});window.addEventListener('storage',refresh)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 window.ClubGestTeamView={switchTeam:switchTeam,refresh:refresh};
 })();

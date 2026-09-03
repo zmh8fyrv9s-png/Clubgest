@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 const URL='https://zdgcxbcsnlwrzhtlklih.supabase.co/rest/v1/demo_state?id=eq.clubgest-demo';
-const KEY='sb_publishable_tchykrPPHUj9Yu8kx6_Us9';
+const KEY='sb_publishable_tchykrPPHUj9Yu8kxM6Xxg_u-y6_Us9';
 const LOCAL='clubgest_v3';
 let pulling=false,saving=false,timer=0;
 const rawSet=Storage.prototype.setItem;

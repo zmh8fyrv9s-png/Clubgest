@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const SB_URL='https://zdgcxbcsnlwrzhtlklih.supabase.co',SB_KEY='sb_publishable_tchykrPPHUj9Yu8kx6M6Xxg_u-y6_Us9'.replace('8M6','8kx6'),CLUB_ID='f7ba0680-d3b5-4064-8e6e-92ee4a85ccbf',LOCAL='clubgest_v3',CHAT_KEY='cgChatMessages';
+const SB_URL='https://zdgcxbcsnlwrzhtlklih.supabase.co',SB_KEY='sb_publishable_tchykrPPHUj9Yu8kx6M6Xxg_u-y6_Us9',CLUB_ID='f7ba0680-d3b5-4064-8e6e-92ee4a85ccbf',LOCAL='clubgest_v3',CHAT_KEY='cgChatMessages';
 function role(){return localStorage.getItem('cgRole')||'parent'}
 function allowed(){return ['parent','coach','admin'].includes(role())}
 function jwt(){try{const direct=localStorage.getItem('sb-access-token');if(direct)return direct;for(const k of Object.keys(localStorage)){if(!k.startsWith('sb-')||!k.endsWith('-auth-token'))continue;const raw=JSON.parse(localStorage.getItem(k)||'null');if(raw?.access_token)return raw.access_token}}catch(e){}return ''}
@@ -13,7 +13,7 @@ function demoMessages(){const s=state();return Array.isArray(s[CHAT_KEY])?s[CHAT
 function setDemoMessages(m){const s=state();s[CHAT_KEY]=m.slice(-100);saveState(s)}
 function roleLabel(){return role()==='admin'?'Administrador':role()==='coach'?'Treinador':'Encarregado'}
 function senderName(){return (localStorage.getItem('cgChatName')||roleLabel()).trim().slice(0,120)}
-function esc(v){return String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\\':'&#92;','"':'&quot;'}[m]))}
+function esc(v){return String(v??'').replace(/[&<>\\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\\':'&#92;','"':'&quot;'}[m]))}
 function isDemo(){return !uid()||localStorage.getItem('cgDemoMode')==='1'}
 async function load(){if(isDemo())return demoMessages();try{return await api('chat_messages?select=id,sender_profile_id,sender_name,body,created_at&club_id=eq.'+CLUB_ID+'&order=created_at.asc&limit=100')}catch(e){return demoMessages()}}
 async function send(body){const clean=String(body||'').trim();if(!clean)return;if(isDemo()){const m=demoMessages();m.push({id:'demo-'+Date.now(),sender_profile_id:uid()||role(),sender_name:senderName(),body:clean,created_at:new Date().toISOString()});setDemoMessages(m);return}await api('chat_messages',{method:'POST',headers:Object.assign(auth(),{Prefer:'return=minimal'}),body:JSON.stringify({club_id:CLUB_ID,sender_profile_id:uid(),sender_name:senderName(),body:clean})})}

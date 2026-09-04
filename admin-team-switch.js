@@ -4,7 +4,7 @@ const BASE_TEAMS=['U7','U9','U11'],CHILDREN_KEY='cgParentChildren';
 function role(){return localStorage.getItem('cgRole')||'parent'}
 function state(){try{return JSON.parse(localStorage.getItem('clubgest_v3')||'null')}catch(e){return null}}
 function keys(d){return Object.keys((d&&d.teams)||{})}
-function children(){try{const a=JSON.parse(localStorage.getItem(CHILDREN_KEY)||'[]');return Array.isArray(a)?a.filter(x=>x&&x.name):[]}catch(e){return[]}}
+function children(){try{const a=JSON.parse(localStorage.getItem(CHILDREN_KEY)||'[]');if(Array.isArray(a)&&a.length)return a.filter(x=>x&&x.name);const n=(localStorage.getItem('cgChildName')||'').trim();return n?[{name:n}]:[]}catch(e){const n=(localStorage.getItem('cgChildName')||'').trim();return n?[{name:n}]:[]}}
 function findChildTeam(name,d){const n=String(name||'').trim().toLowerCase();if(!n||!d?.teams)return '';for(const k of keys(d)){if((d.teams[k].players||[]).some(p=>String(p.name||'').trim().toLowerCase()===n))return k}return ''}
 function childTeam(k,d){return k.team||findChildTeam(k.name,d)||''}
 function switchTeam(team){const r=role(),d=state();if(r!=='admin')return;if(!team||!d?.teams?.[team])return;d.selected=team;try{localStorage.setItem('clubgest_v3',JSON.stringify(d))}catch(e){}localStorage.setItem('cgViewTeam',team);const b=document.getElementById('todayTeam');if(b)b.textContent=team;if(typeof window.render==='function')window.render();if(window.ClubGestAdmin)window.ClubGestAdmin.refresh()}

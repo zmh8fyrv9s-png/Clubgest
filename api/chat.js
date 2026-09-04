@@ -1,5 +1,5 @@
 const SB_URL='https://zdgcxbcsnlwrzhtlklih.supabase.co';
-const SB_KEY='sb_publishable_tchykrPPHUj9Yu8kx6Xxg_u-y6_Us9';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkZ2N4YmNzbmx3cnpodGxrbGloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyOTcwNTcsImV4cCI6MjEwMzg3MzA1N30.5ON7VO8Up7-px12LksP6VBXFb2RgRo4mD41Lhdbfegg';
 const CLUB_ID='f7ba0680-d3b5-4064-8e6e-92ee4a85ccbf';
 function headers(){return {apikey:SB_KEY,Authorization:'Bearer '+SB_KEY,'Content-Type':'application/json'}}
 module.exports=async function(req,res){try{

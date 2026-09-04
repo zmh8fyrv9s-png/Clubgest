@@ -1,7 +1,7 @@
 (function(){
   'use strict';
   const SUPABASE_URL='https://zdgcxbcsnlwrzhtlklih.supabase.co';
-  const SUPABASE_KEY='sb_publishable_tchykrPPHUj9Yu8kxM6Xxg_u-y6_Us9';
+  const SUPABASE_KEY='sb_publishable_tchykrPPHUj9Yu8kx6M6Xxg_u-y6_Us9';
   function token(){
     try{
       const direct=localStorage.getItem('sb-access-token');
@@ -31,4 +31,6 @@
     createSession:(payload)=>api('training_sessions',{method:'POST',headers:{Prefer:'return=representation'},body:JSON.stringify(payload)}),
     updatePlayer:(id,payload)=>api('players?id=eq.'+encodeURIComponent(id),{method:'PATCH',headers:{Prefer:'return=representation'},body:JSON.stringify(payload)})
   };
+  const load=()=>{if(document.getElementById('cg-u9-complete-script'))return;const s=document.createElement('script');s.id='cg-u9-complete-script';s.src='/u9-complete.js?v=1';s.async=true;document.head.appendChild(s)};
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',load);else load();
 })();

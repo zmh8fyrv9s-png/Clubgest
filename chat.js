@@ -28,4 +28,5 @@ function css(){if(document.getElementById('cg-chat-css'))return;const s=document
 function boot(){css();installGuard();if(allowed())setTimeout(refresh,120);setInterval(function(){if(allowed()&&document.visibilityState!=='hidden')refresh()},2500);window.addEventListener('storage',function(e){if(e.key===LOCAL||e.key==='cgRole'||e.key==='cgActiveChild')refresh()})}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 window.ClubGestChat={refresh:refresh,send:send};
+// Beta chat: demo sender_profile_id values are intentionally not tied to auth.users.
 })();

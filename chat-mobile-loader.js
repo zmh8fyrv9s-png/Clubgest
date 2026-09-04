@@ -1,0 +1,1 @@
+(()=>{'use strict';if(document.getElementById('cg-chat-mobile-loader'))return;const s=document.createElement('script');s.id='cg-chat-mobile-loader';s.src='/chat-mobile-fix.js?v=1';s.async=true;document.head.appendChild(s)})();

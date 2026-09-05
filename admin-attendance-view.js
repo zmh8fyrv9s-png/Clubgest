@@ -1,0 +1,13 @@
+(()=>{'use strict';
+if(window.__cgAdminAttendanceView)return;window.__cgAdminAttendanceView=true;
+const K='clubgest_v3',R=()=>localStorage.getItem('cgRole')||'parent';
+const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]||''));
+function get(){try{return JSON.parse(localStorage.getItem(K)||'null')}catch(e){return null}}
+function render(){if(R()!=='admin')return;const d=get(),e=document.getElementById('attendance');if(!d||!e||!d.teams?.U9)return;const players=d.teams.U9.players||[],events=(d.events||[]).filter(x=>x.team==='U9'&&new Date(x.date+'T'+(x.time||'00:00'))<new Date()).sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));if(!events.length){e.innerHTML='<div class="cga2"><h2>Presenças U9</h2><p>Ainda não existem treinos ou jogos realizados.</p></div>';return}
+e.innerHTML='<div class="cga2"><div class="head"><div><h2>Presenças U9</h2><p>Consulta de presenças. O Admin não altera presenças; o Coach é responsável pelo registo.</p></div></div><div class="cga2-scroll"><table class="cga2-table cg-admin-att-view"><tr><th>Jogador</th>'+events.map(x=>'<th>'+E(x.date)+'<br><span>'+(x.type==='match'?'⚽ Jogo':'▣ Treino')+'</span></th>').join('')+'</tr>'+players.map(p=>'<tr><td><b>'+E(p.name)+'</b></td>'+events.map(x=>{const v=d.attendance?.[x.id+'|'+p.name]||'pending';return '<td class="cg-att-cell '+(v==='present'?'cg-att-present':v==='absent'?'cg-att-absent':'cg-att-pending')+'"><b>'+(v==='present'?'✅':v==='absent'?'❌':'—')+'</b></td>'}).join('')+'</tr>').join('')+'</table></div></div>';
+}
+function css(){if(document.getElementById('cg-admin-att-view-css'))return;const s=document.createElement('style');s.id='cg-admin-att-view-css';s.textContent='.cg-admin-att-view th,.cg-admin-att-view td{text-align:center!important;white-space:nowrap}.cg-admin-att-view th:first-child,.cg-admin-att-view td:first-child{text-align:left!important;position:sticky;left:0;background:#fff;z-index:1}.cg-att-cell{font-size:16px!important}.cg-att-cell b{font-size:16px}.cg-att-pending{color:#98a2b3}.cg-admin-att-view th span{font-size:9px;color:#667085}';document.head.appendChild(s)}
+function run(){css();if(R()==='admin')render()}
+const mo=new MutationObserver(()=>{if(R()==='admin'&&document.getElementById('attendance')){const t=document.querySelector('#attendance .cg-admin-att-view');if(!t)render()}});
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{run();mo.observe(document.body,{childList:true,subtree:true})});else{run();mo.observe(document.body,{childList:true,subtree:true})}
+})();
